@@ -19,7 +19,6 @@ let layoutHTML;
 // Escape the SystemJS dir
 let baseDir = __dirname + "../../../../../";
 
-console.log(__dirname);
 app.use(express.static(baseDir + "../public"));
 
 app.use(function (req, res, next) {
@@ -28,10 +27,8 @@ app.use(function (req, res, next) {
     let view = riot.render('main', {
             personStore: personStore
     });
-    console.log(view);
     let renderLayout = cheerio.load(layoutHTML);
     renderLayout('body').append(view);
-    console.log(renderLayout.html());
     res.send(renderLayout.html());
 });
 

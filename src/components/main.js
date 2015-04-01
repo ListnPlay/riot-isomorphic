@@ -31,7 +31,7 @@ riot.tag('main', `
     this.on('premount', () => {
         // For isomorphic rendering
         console.log("PREMOUNT MAIN");
-        if (document) {
+        if (typeof window != "undefined") {
             var serverNode = document.querySelector("main");
             console.log("Server tag", serverNode);
             while (serverNode.hasChildNodes()) {

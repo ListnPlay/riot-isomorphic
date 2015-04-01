@@ -33,6 +33,20 @@ gulp.task('browser-sync', function() {
   });
 });
 
+// ENV
+gulp.task('env', function() {
+  process.env.SYSTEM_JS_PATH = __dirname + "/build"
+});
+
+// PUBLIC 
+gulp.task('public', function() {
+  process.env.SYSTEM_JS_PATH = __dirname + "/build"
+  gulp.src('jspm_packages/**/*.*')
+        .pipe(gulp.dest('public/jspm_packages/'));
+    return gulp.src('src/**/*.js')
+        .pipe(gulp.dest('public/build/'));
+});
+
 // JS
 gulp.task('js', function() {
   return gulp.src('src/**/*.js')
@@ -46,7 +60,7 @@ gulp.task('html', function() {
 });
 
 // serve task
-gulp.task('serve', ['html', 'js'] , function(cb) {
+gulp.task('serve', ['html', 'js', 'public', 'env'] , function(cb) {
   var server = gls.new('app.js');
   server.start();
 
@@ -57,7 +71,7 @@ gulp.task('serve', ['html', 'js'] , function(cb) {
         name: 'JS'
       },
       function() {
-        gulp.start('js');
+        gulp.start('public');
         server.notify();
       }
   );
