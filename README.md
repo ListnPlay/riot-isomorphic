@@ -1,35 +1,13 @@
-# avneriot
-Avner plays with riotjs
+# Isomorphic Riot
+An attempt for an isomorphic appliction using RiotJS 2
 
+Install:
 ```
-sudo npm install -g jspm
-```
-
-configure jspm's github endpoint:
-```
-jspm endpoint config github
-```
-
-Install
-```
+npm install -g jspm gulp
+npm install
 jspm install
 ```
-
-Install some more
-```
-npm install
-```
-
-Because we need the browser package, replace the contents of jspm_packages/ListnPlay/riotjs@2.0.13.js with:
-```
-define(["github:ListnPlay/riotjs@2.0.13/riot"], function(main) {
-  return main;
-});
-```
-
-Start with:
+Run:
 ```
 gulp
 ```
-
-go to http://localhost:3500
