@@ -6,6 +6,7 @@ An attempt for an isomorphic appliction using RiotJS 2. Features include and are
 + Flux architecture with help of [RiotControl](https://github.com/jimsparkman/RiotControl/) - Also used for routing logic.
 + ES6 riot tag files without using the *.tag extension.
 + Gulp based tasks for running the node app using [gulp-live-server](https://github.com/gimm/gulp-live-server) or optionally run solely on the client using [BrowserSync](http://www.browsersync.io/).
++ *Currenly uses our own fork of RiotJS since the server side rendering code is not yet merged*
 
 Install
 (*Make sure you have the latest version of JSPM before installing*):
