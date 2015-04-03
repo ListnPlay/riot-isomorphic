@@ -1,7 +1,14 @@
 # Isomorphic Riot
-An attempt for an isomorphic appliction using RiotJS 2
+An attempt for an isomorphic appliction using RiotJS 2. Features include and are not limited to:
++ ES6 code base using JSPM/SystemJS and Babel transpiler __that run both on the server and the client__ - Also contains example usage of Q.spawn with generators and promises.
++ Shared routing code between client and server using [Page.js](https://visionmedia.github.io/page.js/) and [Page.JS-Express-Mapper](https://github.com/kethinov/page.js-express-mapper.js).
++ Riot rendering on the server side using riot.render.
++ Flux architecture with help of [RiotControl](https://github.com/jimsparkman/RiotControl/) - Also used for routing logic.
++ ES6 riot tag files without using the *.tag extension.
++ Gulp based taksks for running the node app using [gulp-live-server](https://github.com/gimm/gulp-live-server) or optionally run solely on the client using [BrowserSync](http://www.browsersync.io/).
 
-Install:
+Install
+(*Make sure you have the latest version of JSPM before installing*):
 ```
 npm install -g jspm gulp
 npm install
