@@ -1,5 +1,5 @@
 # Isomorphic Riot
-An attempt for an isomorphic appliction using RiotJS 2. Features include and are not limited to:
+An attempt for an isomorphic appliction using RiotJS 2. Includes:
 + ES6 code base using JSPM/SystemJS and Babel transpiler __that run both on the server and the client__ - Also contains example usage of Q.spawn with generators and promises.
 + Shared routing code between client and server using [Page.js](https://visionmedia.github.io/page.js/) and [Page.JS-Express-Mapper](https://github.com/kethinov/page.js-express-mapper.js).
 + Riot rendering on the server side using riot.render.
