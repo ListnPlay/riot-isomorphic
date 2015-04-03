@@ -35,7 +35,7 @@ gulp.task('browser-sync', function() {
 
 // ENV
 gulp.task('env', function() {
-  process.env.SYSTEM_JS_PATH = __dirname + "/build"
+  process.env.APP_BASE_PATH = __dirname;
 });
 
 // PUBLIC 

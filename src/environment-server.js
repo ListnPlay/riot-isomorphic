@@ -1,5 +1,5 @@
-console.log("BaseURL: ", process.env.SYSTEM_JS_PATH);
+console.log("BaseURL: ", process.env.APP_BASE_PATH + "/build");
 
 System.config({
-  "baseURL": process.env.SYSTEM_JS_PATH
+  "baseURL": process.env.APP_BASE_PATH + "/build"
 });

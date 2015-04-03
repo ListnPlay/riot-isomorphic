@@ -32,7 +32,6 @@ System.config({
     "LiveScript": "npm:LiveScript@1.3.1",
     "babel": "npm:babel@4.7.16",
     "babel-runtime": "npm:babel-runtime@4.7.16",
-    "cheerio": "npm:cheerio@0.19.0",
     "coffee-script": "npm:coffee-script@1.9.1",
     "express": "npm:express@4.12.3",
     "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -201,15 +200,6 @@ System.config({
       "ieee754": "npm:ieee754@1.1.4",
       "is-array": "npm:is-array@1.0.1"
     },
-    "npm:cheerio@0.19.0": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "css-select": "npm:css-select@1.0.0",
-      "dom-serializer": "npm:dom-serializer@0.1.0",
-      "entities": "npm:entities@1.1.1",
-      "htmlparser2": "npm:htmlparser2@3.8.2",
-      "lodash": "npm:lodash@3.6.0",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
     "npm:coffee-script@1.9.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
@@ -280,13 +270,6 @@ System.config({
       "public-encrypt": "npm:public-encrypt@2.0.0",
       "randombytes": "npm:randombytes@2.0.1"
     },
-    "npm:css-select@1.0.0": {
-      "boolbase": "npm:boolbase@1.0.0",
-      "css-what": "npm:css-what@1.0.0",
-      "domutils": "npm:domutils@1.4.3",
-      "nth-check": "npm:nth-check@1.0.1",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
     "npm:css@1.0.8": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "css-parse": "npm:css-parse@1.0.4",
@@ -321,34 +304,14 @@ System.config({
       "randombytes": "npm:randombytes@2.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
-    "npm:dom-serializer@0.1.0": {
-      "domelementtype": "npm:domelementtype@1.1.3",
-      "entities": "npm:entities@1.1.1"
-    },
     "npm:domain-browser@1.1.4": {
       "events": "github:jspm/nodelibs-events@0.1.0"
-    },
-    "npm:domhandler@2.3.0": {
-      "domelementtype": "npm:domelementtype@1.1.3"
-    },
-    "npm:domutils@1.4.3": {
-      "domelementtype": "npm:domelementtype@1.1.3"
-    },
-    "npm:domutils@1.5.1": {
-      "dom-serializer": "npm:dom-serializer@0.1.0",
-      "domelementtype": "npm:domelementtype@1.1.3"
     },
     "npm:elliptic@1.0.1": {
       "bn.js": "npm:bn.js@1.3.0",
       "brorand": "npm:brorand@1.0.5",
       "hash.js": "npm:hash.js@1.0.2",
       "inherits": "npm:inherits@2.0.1",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
-    "npm:entities@1.0.0": {
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
-    "npm:entities@1.1.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:etag@1.5.1": {
@@ -405,18 +368,6 @@ System.config({
     "npm:hash.js@1.0.2": {
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:htmlparser2@3.8.2": {
-      "domelementtype": "npm:domelementtype@1.1.3",
-      "domhandler": "npm:domhandler@2.3.0",
-      "domutils": "npm:domutils@1.5.1",
-      "entities": "npm:entities@1.0.0",
-      "events": "github:jspm/nodelibs-events@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "readable-stream": "npm:readable-stream@1.1.13",
-      "stream": "github:jspm/nodelibs-stream@0.1.0",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0",
-      "util": "github:jspm/nodelibs-util@0.1.0"
-    },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
@@ -437,9 +388,6 @@ System.config({
     "npm:levn@0.2.5": {
       "prelude-ls": "npm:prelude-ls@1.1.1",
       "type-check": "npm:type-check@0.3.1"
-    },
-    "npm:lodash@3.6.0": {
-      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:methods@1.1.1": {
       "http": "github:jspm/nodelibs-http@1.7.1"
@@ -465,11 +413,6 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "minimist": "npm:minimist@0.0.8",
       "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.1"
-    },
-    "npm:nth-check@1.0.1": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
-      "boolbase": "npm:boolbase@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:on-finished@2.2.0": {

@@ -9,7 +9,6 @@ function FruitStore() {
     this.currentFruit = null;
 
     this.on("fruit_swap", (fruit) => {
-        console.log("Fruit swap!", fruit)
         this.currentFruit = fruit;
     });
 };

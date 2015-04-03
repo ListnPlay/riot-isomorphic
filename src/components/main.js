@@ -19,7 +19,7 @@ riot.tag('main', `
  function(opts) {
     let store = opts.fruitStore;
     store.on('fruit_swap', (fruit) => {
-        console.log("fruit swap!! " + fruit);
+        console.log("Main - fruit swap!! " + fruit);
         this.update();
     });
     this.on('mount', () => {

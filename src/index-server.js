@@ -10,26 +10,36 @@ import Q from 'q';
 import FS from 'fs';
 
 import routes from './routes';
-import cheerio from 'cheerio';
 
 let app = express();
-let layoutHTML;
 
 
 // Escape the SystemJS dir
-let baseDir = __dirname + "../../../../../";
+app.use(express.static(process.env.APP_BASE_PATH + "/public"));
 
-app.use(express.static(baseDir + "../public"));
+// Riot app template engine
+app.engine('html', function (filePath, options, callback) { 
+    Q.spawn(function* () {
+        try {
+            let view = riot.render(options.mainTag, options.tagOpts);
+            let regex = new RegExp('<' + options.mainTag + '.*<\/' + options.mainTag + '>');
+            // Loading HTML file
+            let content = yield Q.denodeify(FS.readFile)(filePath);
+            let rendered = content.toString().replace(regex, view);
+            return callback(null, rendered);
+        }
+        catch (e) {
+            return callback(e);
+        }
+    });
+})
+
+app.set('views', './'); // specify the views directory
+app.set('view engine', 'html'); // register the template engine
 
 app.use(function (req, res, next) {
     next(); // Process routes
-    console.log("Sending app");
-    let view = riot.render('main', {
-            fruitStore: fruitStore
-    });
-    let renderLayout = cheerio.load(layoutHTML);
-    renderLayout('body').append(view);
-    res.send(renderLayout.html());
+    res.render('index', {mainTag: 'main', tagOpts: {fruitStore: fruitStore}});
 });
 
 
@@ -43,16 +53,5 @@ let server = app.listen(3000, function () {
     console.log('Node app listening at http://%s:%s', host, port);
 });
 
-Q.spawn(function* () {
-    try {
-        console.log("Loading index.html layout");
-        // Loading static HTML file
-        layoutHTML = yield Q.denodeify(FS.readFile)("./index.html");
-        layoutHTML = layoutHTML.toString().trim();
-    }
-    catch (e) {
-        console.log("Error", e);
-    }
-});
 
 
