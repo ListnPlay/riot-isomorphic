@@ -14,17 +14,17 @@ class Routes {
         //                                     //
         app.route('/').get((req, res) => {
             console.log("Handling route!")
-            RiotControl.trigger("person_swap", null);
+            RiotControl.trigger("fruit_swap", null);
         });
 
-        app.route('/avner').get((req, res) => {
-            console.log("Triggering avner person_swap")
-            RiotControl.trigger("person_swap", "avner");
+        app.route('/apple').get((req, res) => {
+            console.log("Triggering apple fruit_swap")
+            RiotControl.trigger("fruit_swap", "apple");
         });
 
-        app.route('/amit').get((req, res) => {
-            console.log("Triggering amit person_swap")
-            RiotControl.trigger("person_swap", "amit");
+        app.route('/banana').get((req, res) => {
+            console.log("Triggering banana fruit_swap")
+            RiotControl.trigger("fruit_swap", "banana");
         });
     }
 };

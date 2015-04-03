@@ -1,26 +1,25 @@
 import riot from 'riot';
-import from './avner';
-import from './amit';
+import from './apple';
+import from './banana';
 
-console.log("RIOT MAIN TAG");
 riot.tag('main', `
 
- <h1>Hello World</h1>
- <a href="/amit">Call Amit</a>
- <a href="/avner">Call Avner</a>
- <avner if={opts.personStore.currentPerson=='avner'} store={opts.personStore}></avner>
- <amit if={opts.personStore.currentPerson=='amit'} store={opts.personStore}></amit>
+ <h1>Welcome to the fruit shopping mall</h1>
+ <a href="/banana">Visit banana store</a>
+ <a href="/apple">Visit apple store</a>
+ <apple if={opts.fruitStore.currentFruit=='apple'} store={opts.fruitStore}></apple>
+ <banana if={opts.fruitStore.currentFruit=='banana'} store={opts.fruitStore}></banana>
  <style>
      main {
          display: block;
-         background-color: red;
+         background-color: pink;
      }
  </style>
  `,
  function(opts) {
-    let store = opts.personStore;
-    store.on('person_swap', (person) => {
-        console.log("Main person swap!! " + person);
+    let store = opts.fruitStore;
+    store.on('fruit_swap', (fruit) => {
+        console.log("fruit swap!! " + fruit);
         this.update();
     });
     this.on('mount', () => {
@@ -30,10 +29,8 @@ riot.tag('main', `
 
     this.on('premount', () => {
         // For isomorphic rendering
-        console.log("PREMOUNT MAIN");
         if (typeof window != "undefined") {
             var serverNode = document.querySelector("main");
-            console.log("Server tag", serverNode);
             while (serverNode.hasChildNodes()) {
                 serverNode.removeChild(serverNode.lastChild);
             }

@@ -6,7 +6,7 @@ import pageExpressMapper from 'kethinov/page.js-express-mapper.js';
 import page from 'page';
 import routes from './routes';
 
-import personStore from './stores/person-store';
+import fruitStore from './stores/fruit-store';
 
 window.page = page;
 
@@ -21,6 +21,6 @@ routes.runRoutingTable(window.app);
 
 page();
 
-riot.mount('main', {personStore: personStore});
+riot.mount('main', {fruitStore: fruitStore});
 
 

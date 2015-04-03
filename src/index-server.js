@@ -2,7 +2,7 @@
 
 import riot from 'riot-node';
 import from './components/main';
-import personStore from './stores/person-store';
+import fruitStore from './stores/fruit-store';
 
 import express from 'express';
 
@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
     next(); // Process routes
     console.log("Sending app");
     let view = riot.render('main', {
-            personStore: personStore
+            fruitStore: fruitStore
     });
     let renderLayout = cheerio.load(layoutHTML);
     renderLayout('body').append(view);
