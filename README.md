@@ -9,7 +9,7 @@ An attempt for an isomorphic appliction using RiotJS 2. Features include and are
 + *Currenly uses our own fork of RiotJS since the server side rendering code is not yet merged*
 
 Install
-(*Make sure you have the latest version of JSPM before installing*):
+(*Make sure you have the latest version of JSPM before installing. The node version I used was 0.11.16*.):
 ```
 npm install -g jspm gulp
 npm install
