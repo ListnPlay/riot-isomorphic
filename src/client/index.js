@@ -1,12 +1,12 @@
 'use strict';
 
 import riot from 'riot';
-import from './components/main';
+import from '../app/components/main';
 import pageExpressMapper from 'kethinov/page.js-express-mapper.js';
 import page from 'page';
-import routes from './routes';
+import routes from '../app/routes';
 
-import fruitStore from './stores/fruit-store';
+import fruitStore from '../app/stores/fruit-store';
 
 window.page = page;
 

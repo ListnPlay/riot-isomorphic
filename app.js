@@ -1,7 +1,7 @@
 // SYSTEM JS
 var System = require('systemjs');
-require('./build/environment-server');
-require('./build/config');
-require('./build/map');
+require('./build/server/environment');
+require('./build/app/config');
+require('./build/app/map');
 
-System.import('./index-server');
+System.import('./server/index');

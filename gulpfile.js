@@ -44,11 +44,11 @@ gulp.task('env', function() {
 
 gulp.task('css', function() {
     // Extract the CSS from the JS Files and place into a single style with autoprefixer
-    gulp.src('src/components/**/*.js')
+    gulp.src('src/app/components/**/*.js')
     .pipe(replace(/(^[\s\S]*<style>|<\/style>[\s\S]*$)/gm, ''))
     .pipe(concat('style.css'))
     .pipe(autoprefixer({browsers: ['last 2 versions']}))
-    .pipe(gulp.dest('build/'));
+    .pipe(gulp.dest('build/app'));
 });
 
 // PUBLIC 
@@ -57,19 +57,26 @@ gulp.task('public', ['js', 'css'], function() {
   gulp.src('jspm_packages/**/*.*')
   .pipe(gulp.dest('public/jspm_packages/'));
 
-  gulp.src('build/**/*.css')
-  .pipe(gulp.dest('public/build/'));
+  gulp.src('build/app/**/*.css')
+  .pipe(gulp.dest('public/build/app'));
 
-  gulp.src('build/**/*.js')
-    .pipe(gulp.dest('public/build/'));
+  gulp.src('build/app/**/*.js')
+  .pipe(gulp.dest('public/build/app'));
+
+  gulp.src('build/client/**/*.js')
+    .pipe(gulp.dest('public/build/client'));
 });
 
 // JS
 gulp.task('js', function() {
-  return gulp.src('src/**/*.js')
-  // Remove the styles (They were extracted)
+    gulp.src('src/app/**/*.js')
+      // remove the styles (they were extracted)
       .pipe(replace(/<style>[\s\S]*<\/style>/gm, ''))
-      .pipe(gulp.dest('build/'));
+      .pipe(gulp.dest('build/app'));
+    gulp.src('src/client/**/*.js')
+      .pipe(gulp.dest('build/client'));
+    gulp.src('src/server/**/*.js')
+      .pipe(gulp.dest('build/server'));
 });
 
 // HTML

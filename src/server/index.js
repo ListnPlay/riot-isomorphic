@@ -1,15 +1,15 @@
 'use strict';
 
 import riot from 'riot-node';
-import from './components/main';
-import fruitStore from './stores/fruit-store';
+import from '../app/components/main';
+import fruitStore from '../app/stores/fruit-store';
 
 import express from 'express';
 
 import Q from 'q';
 import FS from 'fs';
 
-import routes from './routes';
+import routes from '../app/routes';
 
 let app = express();
 
