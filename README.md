@@ -5,6 +5,7 @@ An attempt for an isomorphic appliction using RiotJS 2. Includes:
 + Riot rendering on the server side using riot.render() and a custom template engine.
 + Flux architecture with help of [RiotControl](https://github.com/jimsparkman/RiotControl/) - Also used for routing logic.
 + ES6 riot tag files without using the *.tag extension.
++ Support for Autoprefixer - Gulp tasks extract css from javascript tags, concatinate them and run postprocessing.
 + Gulp based tasks for running the node app using [gulp-live-server](https://github.com/gimm/gulp-live-server) or optionally run solely on the client using [BrowserSync](http://www.browsersync.io/).
 + *Currenly uses our own fork of RiotJS since the server side rendering code is not yet merged*
 
