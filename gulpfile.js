@@ -6,6 +6,9 @@ var rimraf = require('rimraf');
 var browserSync = require('browser-sync');
 var runSequence = require('run-sequence');
 var gls = require('gulp-live-server');
+var replace = require('gulp-replace');
+var concat = require('gulp-concat');
+var autoprefixer = require ('gulp-autoprefixer');
 
 // DEVELOPMENT TASKS
 //================================================
@@ -38,18 +41,34 @@ gulp.task('env', function() {
   process.env.APP_BASE_PATH = __dirname;
 });
 
+
+gulp.task('css', function() {
+    // Extract the CSS from the JS Files and place into a single style with autoprefixer
+    gulp.src('src/components/**/*.js')
+    .pipe(replace(/(^[\s\S]*<style>|<\/style>[\s\S]*$)/gm, ''))
+    .pipe(concat('style.css'))
+    .pipe(autoprefixer({browsers: ['last 2 versions']}))
+    .pipe(gulp.dest('build/'));
+});
+
 // PUBLIC 
-gulp.task('public', function() {
+gulp.task('public', ['js', 'css'], function() {
   process.env.SYSTEM_JS_PATH = __dirname + "/build"
   gulp.src('jspm_packages/**/*.*')
-        .pipe(gulp.dest('public/jspm_packages/'));
-    return gulp.src('src/**/*.js')
-        .pipe(gulp.dest('public/build/'));
+  .pipe(gulp.dest('public/jspm_packages/'));
+
+  gulp.src('build/**/*.css')
+  .pipe(gulp.dest('public/build/'));
+
+  gulp.src('build/**/*.js')
+    .pipe(gulp.dest('public/build/'));
 });
 
 // JS
 gulp.task('js', function() {
   return gulp.src('src/**/*.js')
+  // Remove the styles (They were extracted)
+      .pipe(replace(/<style>[\s\S]*<\/style>/gm, ''))
       .pipe(gulp.dest('build/'));
 });
 
@@ -60,7 +79,7 @@ gulp.task('html', function() {
 });
 
 // serve task
-gulp.task('serve', ['html', 'js', 'public', 'env'] , function(cb) {
+gulp.task('serve', ['html', 'public', 'env'] , function(cb) {
   var server = gls.new('app.js');
   server.start();
 
@@ -117,6 +136,7 @@ gulp.task('delete-dist', function() {
 });
 
 // CSS
+/*
 gulp.task('css', function() {
   return gulp.src('./build/css/main.css')
     .pipe(gulp.dest('./dist/css'))
@@ -124,7 +144,7 @@ gulp.task('css', function() {
     .pipe(plugins.rename('main.min.css'))
     .pipe(gulp.dest('./dist/css'))
     .on('error', plugins.util.log);
-});
+    });*/
 
 // Bundle with jspm
 gulp.task('bundle', ['js'], plugins.shell.task([

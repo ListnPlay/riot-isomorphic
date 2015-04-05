@@ -13,6 +13,7 @@ import routes from './routes';
 
 let app = express();
 
+let publicFiles = [];
 
 // Escape the SystemJS dir
 app.use(express.static(process.env.APP_BASE_PATH + "/public"));
@@ -29,6 +30,7 @@ app.engine('html', function (filePath, options, callback) {
             return callback(null, rendered);
         }
         catch (e) {
+            console.log("App engine error: ", e, " Filepath: ", filePath);
             return callback(e);
         }
     });
@@ -39,7 +41,10 @@ app.set('view engine', 'html'); // register the template engine
 
 app.use(function (req, res, next) {
     next(); // Process routes
-    res.render('index', {mainTag: 'main', tagOpts: {fruitStore: fruitStore}});
+    // don't render view for file requests (Currently just looks for a file extension)
+    if(!req.path.match(/^.*\.[\w]+$/)) {
+        res.render('index', {mainTag: 'main', tagOpts: {fruitStore: fruitStore}});
+    }
 });
 
 

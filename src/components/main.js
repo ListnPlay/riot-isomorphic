@@ -14,6 +14,9 @@ riot.tag('main', `
          display: block;
          background-color: pink;
      }
+     a {
+         display: flex;
+     }
  </style>
  `,
  function(opts) {
