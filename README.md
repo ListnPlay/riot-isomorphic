@@ -20,3 +20,8 @@ Run:
 ```
 gulp
 ```
+
+Or bundle for distribution and run:
+```
+gulp dist
+````
