@@ -41,6 +41,7 @@ System.config({
     "prelude-ls": "npm:prelude-ls@1.1.1",
     "process": "github:jspm/nodelibs-process@0.1.1",
     "q": "npm:q@2.0.3",
+    "riot": "riotjs-browser",
     "riot-node": "github:ListnPlay/riotjs@dev",
     "riotcontrol": "npm:riotcontrol@0.0.1",
     "simple-dom": "npm:simple-dom@0.2.2",

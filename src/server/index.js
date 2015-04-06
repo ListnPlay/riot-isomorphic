@@ -36,7 +36,7 @@ app.engine('html', function (filePath, options, callback) {
     });
 })
 
-app.set('views', './'); // specify the views directory
+app.set('views', './build/'); // specify the views directory
 app.set('view engine', 'html'); // register the template engine
 
 app.use(function (req, res, next) {

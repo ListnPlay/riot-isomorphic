@@ -63,6 +63,9 @@ gulp.task('public', ['js', 'css'], function() {
   gulp.src('build/app/**/*.js')
   .pipe(gulp.dest('public/build/app'));
 
+  gulp.src('build/*.js')
+  .pipe(gulp.dest('public'));
+
   gulp.src('build/client/**/*.js')
     .pipe(gulp.dest('public/build/client'));
 });
@@ -77,6 +80,8 @@ gulp.task('js', function() {
       .pipe(gulp.dest('build/client'));
     gulp.src('src/server/**/*.js')
       .pipe(gulp.dest('build/server'));
+    gulp.src('src/*.js')
+      .pipe(gulp.dest('build'));
 });
 
 // HTML
@@ -124,9 +129,6 @@ gulp.task('delete-build', function() {
   });
 });
 
-//build (no server)
-gulp.task('build', ['sass']);
-
 // Default
 gulp.task('default', ['serve']);
 
@@ -138,24 +140,33 @@ gulp.task('default', ['serve']);
 // Delete dist Directory
 gulp.task('delete-dist', function() {
   rimraf('./dist', function(err) {
-    plugins.util.log(err);
   });
 });
 
-// CSS
-/*
-gulp.task('css', function() {
-  return gulp.src('./build/css/main.css')
-    .pipe(gulp.dest('./dist/css'))
-    .pipe(plugins.csso())
-    .pipe(plugins.rename('main.min.css'))
-    .pipe(gulp.dest('./dist/css'))
-    .on('error', plugins.util.log);
-    });*/
+gulp.task('public-dist', ['html-dist', 'js', 'css'], function() {
+  process.env.SYSTEM_JS_PATH = __dirname + "/build"
+
+  gulp.src('build/app/**/*.css')
+  .pipe(gulp.dest('public/build/app'));
+
+gulp.src('build/index.html')
+.pipe(gulp.dest('public/build'));
+
+  gulp.src('dist/client/**/*.js')
+    .pipe(gulp.dest('public/dist/client'));
+});
+
+gulp.task('html-dist', function() {
+   gulp.src(['./dist-src/index.html'])
+  .pipe(gulp.dest('./build'));
+});
 
 // Bundle with jspm
 gulp.task('bundle', ['js'], plugins.shell.task([
-  'jspm bundle-sfx build/js/main dist/js/app.js'
+     // Server bundle? Don't need for now
+    // 'jspm bundle-sfx server/index dist/server/bundle.js',
+    // Client bundle
+    'jspm bundle-sfx client/index dist/client/bundle.js'
 ]));
 
 // Uglify the bundle
@@ -172,8 +183,16 @@ gulp.task('uglify', function() {
 gulp.task('dist', function() {
   runSequence(
     'delete-dist',
-    'build',
-    ['css', 'html', 'bundle'],
-    'uglify'
+    'bundle',
+    'public-dist',
+    'serve-dist'
+    // 'uglify'
   );
 });
+
+gulp.task('serve-dist', ['env'] , function(cb) {
+  var server = gls.new('app.js');
+  server.start();
+
+});
+

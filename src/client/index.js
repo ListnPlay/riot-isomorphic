@@ -21,6 +21,9 @@ routes.runRoutingTable(window.app);
 
 page();
 
-riot.mount('main', {fruitStore: fruitStore});
+window.onload = function() {
+    console.log("Page loaded!");
+    riot.mount('main', {fruitStore: fruitStore});
+}
 
 

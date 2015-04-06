@@ -27,8 +27,9 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-# Build folder
+# Build & dist folders
 build
+dist
 
 # JSPM packages
 jspm_packages
