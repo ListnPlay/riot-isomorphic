@@ -10,6 +10,10 @@ var replace = require('gulp-replace');
 var concat = require('gulp-concat');
 var autoprefixer = require ('gulp-autoprefixer');
 
+
+var server;
+var watchEvent;
+
 // DEVELOPMENT TASKS
 //================================================
 
@@ -44,49 +48,61 @@ gulp.task('env', function() {
 
 gulp.task('css', function() {
     // Extract the CSS from the JS Files and place into a single style with autoprefixer
-    gulp.src('src/app/components/**/*.js')
+    return gulp.src('src/app/components/**/*.js')
     .pipe(replace(/(^[\s\S]*<style>|<\/style>[\s\S]*$)/gm, ''))
     .pipe(concat('style.css'))
     .pipe(autoprefixer({browsers: ['last 2 versions']}))
     .pipe(gulp.dest('build/app'));
 });
 
-// PUBLIC 
-gulp.task('public', function() {
-  runSequence(
-       'js',
-       'css'
-  );
+
+gulp.task('public',['public-jspm', 'public-css', 'public-app', 'public-js'], function() {
   process.env.SYSTEM_JS_PATH = __dirname + "/build"
-  gulp.src('jspm_packages/**/*.*')
-  .pipe(gulp.dest('public/jspm_packages/'));
 
-  gulp.src('build/app/**/*.css')
-  .pipe(gulp.dest('public/build/app'));
-
-  gulp.src('build/app/**/*.js')
-  .pipe(gulp.dest('public/build/app'));
-
-  gulp.src('build/*.js')
-  .pipe(gulp.dest('public'));
-
-  gulp.src('build/client/**/*.js')
+  return gulp.src('build/client/**/*.js')
     .pipe(gulp.dest('public/build/client'));
 });
 
+gulp.task('public-jspm', function() {
+    return gulp.src('jspm_packages/**/*.*')
+    .pipe(gulp.dest('public/jspm_packages/'));
+});
+gulp.task('public-css', ['css'], function() {
+    return gulp.src('build/app/**/*.css')
+    .pipe(gulp.dest('public/build/app'));
+});
+gulp.task('public-app', ['js'], function() {
+    return gulp.src('build/app/**/*.js')
+    .pipe(gulp.dest('public/build/app'));
+});
+gulp.task('public-js' , function() {
+    gulp.src('build/*.js')
+    .pipe(gulp.dest('public'));
+});
+
 // JS
-gulp.task('js', function() {
-    gulp.src('src/app/**/*.js')
+gulp.task('js', ['js-client', 'js-server', 'js-app'], function() {
+    // config file
+    return gulp.src('src/*.js')
+      .pipe(gulp.dest('build'));
+});
+
+gulp.task('js-server', function() {
+    return gulp.src('src/server/**/*.js')
+      .pipe(gulp.dest('build/server'));
+});
+
+gulp.task('js-client', function() {
+    return gulp.src('src/client/**/*.js')
+      .pipe(gulp.dest('build/client'));
+});
+
+gulp.task('js-app', function() {
+    return gulp.src('src/app/**/*.js')
       // remove the styles (they were extracted)
       .pipe(replace(/<style>[\s\S]*<\/style>/gm, ''))
       .pipe(gulp.dest('build/app'));
-    gulp.src('src/client/**/*.js')
-      .pipe(gulp.dest('build/client'));
-    gulp.src('src/server/**/*.js')
-      .pipe(gulp.dest('build/server'));
-    gulp.src('src/*.js')
-      .pipe(gulp.dest('build'));
-});
+})
 
 // HTML
 gulp.task('html', function() {
@@ -96,22 +112,22 @@ gulp.task('html', function() {
 
 // serve task
 gulp.task('serve', ['html', 'public', 'env'] , function(cb) {
-  var server = gls.new('app.js');
+  server = gls.new('app.js');
   server.start();
 
 
-  plugins.watch(
-      './src/**/*.js',
-      {
-        name: 'JS'
-      },
-      function() {
-        gulp.start('public');
-        server.notify();
-      }
-  );
+  gulp.watch(['./src/**/*.js'], function(event) {
+      watchEvent = event;
+      gulp.start('reload-server');
+  });
   gulp.watch('app.js', server.start);
 });
+
+gulp.task('reload-server', ['public'], function() {
+    console.log("Reloading server!")
+    server.notify(watchEvent) ;
+});
+
 
 gulp.task('browser', ['browser-sync', 'html', 'js'] , function(cb) {
 
