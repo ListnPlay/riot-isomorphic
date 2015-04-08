@@ -25,7 +25,6 @@ page();
 
 // Check if the main tag was loaded
 let mainTag = document.querySelector('main');
-console.log("Main tag ???!", mainTag);
 if (mainTag) {
     startApp();        
 } 
