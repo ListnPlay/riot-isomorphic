@@ -10,6 +10,7 @@ import fruitStore from '../app/stores/fruit-store';
 
 window.page = page;
 
+
 // activate express-mapper plugin
 pageExpressMapper({
     renderMethod: null,
@@ -21,8 +22,22 @@ routes.runRoutingTable(window.app);
 
 page();
 
-window.onload = function() {
-    console.log("Page loaded!");
+
+// Check if the main tag was loaded
+let mainTag = document.querySelector('main');
+console.log("Main tag ???!", mainTag);
+if (mainTag) {
+    startApp();        
+} 
+else {
+    // Wait for full page load
+    window.onload = function() {
+        console.log("Page loaded!");
+        startApp();
+    }
+}
+
+function startApp() {
     riot.mount('main', {fruitStore: fruitStore});
 }
 

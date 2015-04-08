@@ -52,7 +52,11 @@ gulp.task('css', function() {
 });
 
 // PUBLIC 
-gulp.task('public', ['js', 'css'], function() {
+gulp.task('public', function() {
+  runSequence(
+       'js',
+       'css'
+  );
   process.env.SYSTEM_JS_PATH = __dirname + "/build"
   gulp.src('jspm_packages/**/*.*')
   .pipe(gulp.dest('public/jspm_packages/'));
