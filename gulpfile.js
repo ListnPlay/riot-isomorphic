@@ -64,7 +64,7 @@ gulp.task('public', ['js', 'css'], function() {
   .pipe(gulp.dest('public/build/app'));
 
   gulp.src('build/*.js')
-  .pipe(gulp.dest('public/build'));
+  .pipe(gulp.dest('public'));
 
   gulp.src('build/client/**/*.js')
     .pipe(gulp.dest('public/build/client'));
