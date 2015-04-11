@@ -33,6 +33,7 @@ System.config({
     "babel": "npm:babel@4.7.16",
     "babel-runtime": "npm:babel-runtime@4.7.16",
     "coffee-script": "npm:coffee-script@1.9.1",
+    "core-js": "npm:core-js@0.8.1",
     "express": "npm:express@4.12.3",
     "fs": "github:jspm/nodelibs-fs@0.1.2",
     "jade": "npm:jade@1.9.2",
@@ -230,6 +231,9 @@ System.config({
     },
     "npm:cookie-signature@1.0.6": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0"
+    },
+    "npm:core-js@0.8.1": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:core-util-is@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"

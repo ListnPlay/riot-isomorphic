@@ -57,8 +57,6 @@ gulp.task('css', function() {
 
 
 gulp.task('public',['public-jspm', 'public-css', 'public-app', 'public-js'], function() {
-  process.env.SYSTEM_JS_PATH = __dirname + "/build"
-
   return gulp.src('build/client/**/*.js')
     .pipe(gulp.dest('public/build/client'));
 });
@@ -75,7 +73,7 @@ gulp.task('public-app', ['js'], function() {
     return gulp.src('build/app/**/*.js')
     .pipe(gulp.dest('public/build/app'));
 });
-gulp.task('public-js' , function() {
+gulp.task('public-js' , ['js'], function() {
     gulp.src('build/*.js')
     .pipe(gulp.dest('public'));
 });
@@ -164,8 +162,6 @@ gulp.task('delete-dist', function() {
 });
 
 gulp.task('public-dist', ['html-dist', 'js', 'css'], function() {
-  process.env.SYSTEM_JS_PATH = __dirname + "/build"
-
   gulp.src('build/app/**/*.css')
   .pipe(gulp.dest('public/build/app'));
 
