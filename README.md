@@ -17,15 +17,15 @@ npm install
 jspm install
 ```
 
-## Config:
-If using Windows environment, prepend `file:`
+## Config
+If using Windows environment, prepend `file:` in `gulpfile.js`
 ```
 gulp.task('env', function() {
   process.env.APP_BASE_PATH = 'file:' + __dirname;
 });
 ```
 
-## Run:
+## Run
 ```
 gulp
 ```
