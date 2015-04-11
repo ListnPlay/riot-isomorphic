@@ -74,7 +74,7 @@ gulp.task('public-app', ['js'], function() {
     .pipe(gulp.dest('public/build/app'));
 });
 gulp.task('public-js' , ['js'], function() {
-    gulp.src('build/*.js')
+    return gulp.src('build/*.js')
     .pipe(gulp.dest('public'));
 });
 
