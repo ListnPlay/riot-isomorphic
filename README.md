@@ -7,7 +7,7 @@ An attempt for an isomorphic appliction using RiotJS 2. Includes:
 + ES6 riot tag files without using the *.tag extension.
 + Support for Autoprefixer - Gulp tasks extract css from javascript tags, concatinate them and run postprocessing.
 + Gulp based tasks for running the node app using [gulp-live-server](https://github.com/gimm/gulp-live-server) or optionally run solely on the client using [BrowserSync](http://www.browsersync.io/).
-+ *Currenly uses our own fork of RiotJS since the server side rendering code is not yet merged*
++ *Currenly uses our own fork of RiotJS 2.0.14@master to remove the unnecessary compiler requirment from the node module*
 
 Install
 (*Make sure you have the latest version of JSPM before installing. The node version I used was 0.11.16*.):
