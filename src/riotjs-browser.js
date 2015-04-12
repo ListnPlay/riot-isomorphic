@@ -1,3 +1,3 @@
-define(["github:ListnPlay/riotjs@dev/riot"], function(main) {
+define(["github:ListnPlay/riotjs@master/riot"], function(main) {
   return main;
 })

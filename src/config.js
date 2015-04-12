@@ -14,12 +14,12 @@ System.config({
 
 System.config({
   "meta": {
-    "github:ListnPlay/riotjs@dev/lib/node": {
+    "github:ListnPlay/riotjs@master/lib/node": {
       "deps": [
         "../riot"
       ]
     },
-    "github:ListnPlay/riotjs@dev/lib/compiler": {
+    "github:ListnPlay/riotjs@master/lib/compiler": {
       "deps": [
         "../riot"
       ]
@@ -43,7 +43,7 @@ System.config({
     "process": "github:jspm/nodelibs-process@0.1.1",
     "q": "npm:q@2.0.3",
     "riot": "riotjs-browser",
-    "riot-node": "github:ListnPlay/riotjs@dev",
+    "riot-node": "github:ListnPlay/riotjs@master",
     "riotcontrol": "npm:riotcontrol@0.0.1",
     "simple-dom": "npm:simple-dom@0.2.2",
     "simple-html-tokenizer": "npm:simple-html-tokenizer@0.1.1",
