@@ -30,8 +30,8 @@ app.engine('html', function (filePath, options, callback) {
             return callback(null, rendered);
         }
         catch (e) {
-            console.log("App engine error: ", e, " Filepath: ", filePath);
-            return callback(e);
+            console.log("App engine error: ", e, " Filepath: ", filePath, " Callback: ", callback);
+            return;
         }
     });
 })
