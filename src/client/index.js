@@ -1,8 +1,8 @@
 'use strict';
 
 import riot from 'riot';
-import from '../app/components/main';
-import pageExpressMapper from 'kethinov/page.js-express-mapper.js';
+import main from '../app/components/main';
+import pageExpressMapper from 'page.js-express-mapper.js';
 import page from 'page';
 import routes from '../app/routes';
 

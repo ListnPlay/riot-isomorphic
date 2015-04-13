@@ -1,7 +1,7 @@
 'use strict';
 
-import riot from 'riot-node';
-import from '../app/components/main';
+import riot from 'riot';
+import main from '../app/components/main';
 import fruitStore from '../app/stores/fruit-store';
 
 import express from 'express';

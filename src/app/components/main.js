@@ -1,6 +1,6 @@
 import riot from 'riot';
-import from './apple';
-import from './banana';
+import apple from './apple';
+import banana from './banana';
 
 riot.tag('main', `
 
