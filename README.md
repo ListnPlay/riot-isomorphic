@@ -12,9 +12,8 @@ An attempt for an isomorphic appliction using RiotJS 2. Includes:
 Install
 (*Make sure you have the latest version of JSPM before installing. The node version I used was 0.11.16*.):
 ```
-npm install -g jspm gulp
+npm install -g gulp
 npm install
-jspm install
 ```
 Run:
 ```
