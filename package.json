@@ -18,9 +18,11 @@
   },
   "dependencies": {
     "babel": "^5.1.5",
+    "babel-runtime": "^5.1.9",
     "body-parser": "^1.12.2",
     "express": "^4.12.3",
     "feathers": "^1.1.0-pre.0",
+    "isomorphic-fetch": "^2.0.1",
     "page": "^1.6.2",
     "page.js-express-mapper.js": "^1.0.5",
     "q": "^1.2.0",

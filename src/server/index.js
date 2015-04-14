@@ -12,7 +12,6 @@ import FS from 'fs';
 
 import routes from '../app/routes';
 
-
 import fruitService from './services/fruit';
 
 
@@ -46,9 +45,9 @@ app.set('view engine', 'html'); // register the template engine
 
 app.use(function (req, res, next) {
     next(); // Process routes
-    // don't render view for file requests (Currently just looks for a file extension)
-    if(!req.path.match(/^.*\.[\w]+$/)) {
-        res.render('index', {mainTag: 'main', tagOpts: {fruitStore: fruitStore}});
+    // don't render view for file requests or services
+    if(!req.path.match(/^.*\.[\w]+$/) && !req.path.match(/^\/service.*$/)) {
+       res.render('index', {mainTag: 'main', tagOpts: {fruitStore: fruitStore}});
     }
 });
 
@@ -58,7 +57,7 @@ routes.runRoutingTable(app);
 // Server routes
 let server = app.configure(feathers.rest())
   .use(bodyParser.json())
-  .use('/fruit', fruitService)
+  .use('/service/fruit', fruitService)
   .listen(3000, () => {
 
     let host = server.address().address

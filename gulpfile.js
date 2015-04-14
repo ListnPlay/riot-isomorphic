@@ -41,7 +41,7 @@ gulp.task('browser-sync', function() {
     port: 3500,
     browser: [],
     tunnel: false
-  });
+  });;
 });
 
 // ENV
@@ -76,7 +76,7 @@ gulp.task('browserify', ['js-client', 'js-server', 'js-app'], function() {
     var b = browserify({
         entries: './build/client/index.js',
         debug: true,
-        transform: [babelify]
+        transform: [babelify.configure({optional: ['runtime']})]
     });
     return b.bundle()
         .pipe(source('bundle.js'))

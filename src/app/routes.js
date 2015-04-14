@@ -13,7 +13,7 @@ class Routes {
         //============Routing Table============//
         //                                     //
         app.route('/').get((req, res) => {
-            console.log("Handling route!")
+            console.log("Default route!")
             RiotControl.trigger("fruit_swap", null);
         });
 
