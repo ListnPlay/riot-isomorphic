@@ -4,19 +4,24 @@ import riot from 'riot';
 import main from '../app/components/main';
 import fruitStore from '../app/stores/fruit-store';
 
-import express from 'express';
+import feathers from 'feathers';
+import bodyParser from 'body-parser';
 
 import Q from 'q';
 import FS from 'fs';
 
 import routes from '../app/routes';
 
-let app = express();
+
+import fruitService from './services/fruit';
+
+
+let app = feathers();
 
 let publicFiles = [];
 
 // Escape the SystemJS dir
-app.use(express.static(process.env.APP_BASE_PATH + "/public"));
+app.use(feathers.static(process.env.APP_BASE_PATH + "/public"));
 
 // Riot app template engine
 app.engine('html', function (filePath, options, callback) { 
@@ -47,16 +52,17 @@ app.use(function (req, res, next) {
     }
 });
 
-
+// Client routes
 routes.runRoutingTable(app);
 
-let server = app.listen(3000, function () {
+// Server routes
+let server = app.configure(feathers.rest())
+  .use(bodyParser.json())
+  .use('/fruit', fruitService)
+  .listen(3000, () => {
 
     let host = server.address().address
     let port = server.address().port
 
-    console.log('Node app listening at http://%s:%s', host, port);
+    console.log('Node/Feathers app listening at http://%s:%s', host, port);
 });
-
-
-
