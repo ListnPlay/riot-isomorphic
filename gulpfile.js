@@ -9,6 +9,10 @@ var gls = require('gulp-live-server');
 var replace = require('gulp-replace');
 var concat = require('gulp-concat');
 var autoprefixer = require ('gulp-autoprefixer');
+var browserify = require('browserify');
+var babelify = require("babelify");
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 
 var server;
@@ -37,7 +41,7 @@ gulp.task('browser-sync', function() {
     port: 3500,
     browser: [],
     tunnel: false
-  });
+  });;
 });
 
 // ENV
@@ -56,33 +60,29 @@ gulp.task('css', function() {
 });
 
 
-gulp.task('public',['public-jspm', 'public-css', 'public-app', 'public-js'], function() {
-  return gulp.src('build/client/**/*.js')
+gulp.task('public',['public-css','browserify'], function() {
+    return gulp.src('build/client/bundle.js')
     .pipe(gulp.dest('public/build/client'));
 });
 
-gulp.task('public-jspm', function() {
-    return gulp.src('jspm_packages/**/*.*')
-    .pipe(gulp.dest('public/jspm_packages/'));
-});
 gulp.task('public-css', ['css'], function() {
     return gulp.src('build/app/**/*.css')
     .pipe(gulp.dest('public/build/app'));
 });
-gulp.task('public-app', ['js'], function() {
-    return gulp.src('build/app/**/*.js')
-    .pipe(gulp.dest('public/build/app'));
-});
-gulp.task('public-js' , ['js'], function() {
-    return gulp.src('build/*.js')
-    .pipe(gulp.dest('public'));
-});
 
 // JS
-gulp.task('js', ['js-client', 'js-server', 'js-app'], function() {
-    // config file
-    return gulp.src('src/*.js')
-      .pipe(gulp.dest('build'));
+gulp.task('browserify', ['js-client', 'js-server', 'js-app'], function() {
+    // Browserify
+    var b = browserify({
+        entries: './build/client/index.js',
+        debug: true,
+        transform: [babelify.configure({optional: ['runtime', 'es7.asyncFunctions']})]
+    });
+    return b.bundle()
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(gulp.dest('build/client'));
+
 });
 
 gulp.task('js-server', function() {

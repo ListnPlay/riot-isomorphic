@@ -1,6 +1,7 @@
-// SYSTEM JS
-var System = require('systemjs');
-require('./build/server/environment');
-require('./build/config');
+// Babel ES6
+require("babel/register")({
+    stage: 1
+});
 
-System.import('server/index');
+// Server
+require("./build/server")
