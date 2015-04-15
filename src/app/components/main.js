@@ -20,7 +20,6 @@ riot.tag('main', `
  </style>
  `,
  function(opts) {
-    console.log("Main tag opts: ", opts);
     let store = opts.stores.fruit;
     store.on('fruit_swap', (fruit) => {
         console.log("Main - fruit swap!! " + fruit);

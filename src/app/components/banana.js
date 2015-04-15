@@ -20,17 +20,14 @@ riot.tag('banana', `
  `,
  function(opts) {
     let store = opts.store;
-    this.data = {types: []};
-    if (opts.store.fruitData) {
-        this.data.types = opts.store.fruitData.types;
-    }
-    console.log("Banana Tag: ", this.data);
+    this.data = store.fruitData;
+
     store.on("fruit_data_updated", () => {
-         this.data.types = opts.store.fruitData.types;
+         this.data = store.fruitData;
          this.update();
     });
     store.on("fruit_swap", () => {
-        this.data.types = [];
+        this.data = {types: []};
         this.update();
     });
 });
