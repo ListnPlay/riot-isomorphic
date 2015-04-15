@@ -1,4 +1,4 @@
-const fruistService = {
+const fruitService = {
     get: function(fruitName) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -21,4 +21,4 @@ const fruistService = {
 };
 
 
-export default fruistService;
+export default fruitService;

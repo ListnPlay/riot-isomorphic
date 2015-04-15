@@ -13,6 +13,7 @@ var browserify = require('browserify');
 var babelify = require("babelify");
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var file = require('gulp-file');
 
 
 var server;
@@ -60,7 +61,7 @@ gulp.task('css', function() {
 });
 
 
-gulp.task('public',['public-css','browserify'], function() {
+gulp.task('public',['public-css','public-lib','browserify'], function() {
     return gulp.src('build/client/bundle.js')
     .pipe(gulp.dest('public/build/client'));
 });
@@ -68,6 +69,11 @@ gulp.task('public',['public-css','browserify'], function() {
 gulp.task('public-css', ['css'], function() {
     return gulp.src('build/app/**/*.css')
     .pipe(gulp.dest('public/build/app'));
+});
+
+gulp.task('public-lib', function() {
+    return gulp.src('lib/**/*.js')
+    .pipe(gulp.dest('public/lib'));
 });
 
 // JS
@@ -146,6 +152,19 @@ gulp.task('delete-build', function() {
     plugins.util.log(err);
   });
 });
+
+
+// Task for generating the primus client
+gulp.task('primus', function() {
+    var Primus = require('primus');
+    var Emitter = require('primus-emitter');
+    var primus = Primus.createServer(function connection(spark) {
+
+    }, { port: 3000, transformer: 'websockets'  });    
+    primus.use('emitter', Emitter);
+    var str = primus.library();
+    return file('primus.js', str, { src: true  }).pipe(gulp.dest('lib'));
+})
 
 // Default
 gulp.task('default', ['serve']);

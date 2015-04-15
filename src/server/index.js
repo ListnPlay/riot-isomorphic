@@ -83,10 +83,19 @@ app.use(function (req, res, next) {
 routes.runRoutingTable(app);
 
 // Server routes
-let server = app.configure(feathers.rest())
-  .use(bodyParser.json())
-  .use('/service/fruit', services.fruit)
-  .listen(3000, () => {
+let server = 
+    app.configure(
+        feathers.rest()
+    )
+    .configure(feathers.primus({
+        transformer: 'websockets'
+
+    }, function(primus) {
+    }))
+    .use(bodyParser.json())
+    .use('/service/fruit', services.fruit)
+    .use('/service/taste', services.taste)
+    .listen(3000, () => {
 
     let host = server.address().address
     let port = server.address().port

@@ -8,7 +8,6 @@ riot.tag('banana', `
         <div>{name}</div>
     </li>
  </ul>
- <a href="/apple">Visit apple store</a>
  <style>
      banana h1 {
          color: yellow;

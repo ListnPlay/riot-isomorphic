@@ -27,6 +27,13 @@ function FruitStore() {
             console.log("Error getting fruit data ", e);                    
         }
     });
+
+    this.on("taste_fruit", function(type) {
+        let primus = Primus.connect('http://localhost:3000');
+        primus.send('service/taste::get',type, function(error, result) {
+            RiotControl.trigger('taste_result', {'type': type, 'result': result.result});
+        });
+    });
 };
 
 

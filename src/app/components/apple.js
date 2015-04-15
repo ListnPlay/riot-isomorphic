@@ -1,5 +1,6 @@
 'use strict'
 import riot from 'riot';
+import RiotControl from 'riotcontrol';
 
 riot.tag('apple', `
 
@@ -9,7 +10,13 @@ riot.tag('apple', `
          <div>{name}</div>
      </li>
  </ul>
- <a href="/banana">Visit banana store</a>
+ <div show='{ data.types.length > 0 }'>
+     <button onclick={try} type="button">Try one</button> 
+ </div>
+ <div show='{ tasteResult }'>
+     <p> Tried a {tasteResult.type} and it was {tasteResult.result} </p>
+ </div>
+ 
  <style>
      apple h1 {
          color: green;
@@ -30,6 +37,18 @@ riot.tag('apple', `
     store.on("fruit_swap", () => {
         this.data = {types: []};
         this.update();
+    });
+
+    this.try = () => {
+        let typeToTry = this.data.types[Math.floor((Math.random() * this.data.types.length))]; 
+        console.log("Trying ", typeToTry);
+        RiotControl.trigger("taste_fruit", typeToTry);
+    }
+
+    store.on('taste_result', (data) => {
+      console.log("Taste result!", data);  
+      this.tasteResult = data;
+      this.update();
     });
 });
 
