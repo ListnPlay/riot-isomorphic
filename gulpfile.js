@@ -76,7 +76,7 @@ gulp.task('browserify', ['js-client', 'js-server', 'js-app'], function() {
     var b = browserify({
         entries: './build/client/index.js',
         debug: true,
-        transform: [babelify.configure({optional: ['runtime']})]
+        transform: [babelify.configure({optional: ['runtime', 'es7.asyncFunctions']})]
     });
     return b.bundle()
         .pipe(source('bundle.js'))

@@ -10,23 +10,20 @@ function FruitStore() {
     riot.observable(this);
     this.currentFruit = null;
 
-    this.on("fruit_swap", (fruit) => {
-        this.currentFruit = fruit;
-        let self = this;
+    this.on("fruit_swap", async function (fruit) { 
+        try {
+            this.currentFruit = fruit;
 
-        if (fruit) {
-            // Get fruit types
-            console.log("Getting info for ", fruit);
-            Q.spawn(function* () {
-                try {
-                    let response = yield fetch('http://localhost:3000/service/fruit/' + fruit);
-                    self.fruitData = yield response.json();
-                    RiotControl.trigger("fruit_data_updated");
-                }
-                catch (e) {
-                    console.log("Error getting fruit data ", e);                    
-                }
-            });
+            if (fruit) {
+                // Get fruit types
+                console.log("Getting info for ", fruit);
+                let response = await fetch('http://localhost:3000/service/fruit/' + fruit);
+                this.fruitData = await response.json();
+                RiotControl.trigger("fruit_data_updated");
+            }
+        }
+        catch (e) {
+            console.log("Error getting fruit data ", e);                    
         }
     });
 };
