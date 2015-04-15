@@ -2,18 +2,20 @@
 
 import riot from 'riot';
 import main from '../app/components/main';
-import fruitStore from '../app/stores/fruit-store';
 
 import feathers from 'feathers';
 import bodyParser from 'body-parser';
 
 import Q from 'q';
 import FS from 'fs';
+import _ from 'underscore'
 
 import routes from '../app/routes';
 
-import fruitService from './services/fruit';
+import services from './services';
+import stores from '../app/stores';
 
+import RiotControl from 'riotcontrol';
 
 let app = feathers();
 
@@ -48,8 +50,32 @@ app.set('view engine', 'html'); // register the template engine
 app.use(function (req, res, next) {
     next(); // Process routes
     // don't render view for file requests or services
+
     if(!req.path.match(/^.*\.[\w]+$/) && !req.path.match(/^\/service.*$/)) {
-       res.render('index', {mainTag: 'main', tagOpts: {fruitStore: fruitStore}});
+        let rendered = false;
+        let waitBeforeRendering = [];
+        if (req.waitBeforeRendering) {
+            // Create a copy
+            waitBeforeRendering = req.waitBeforeRendering.slice();
+        }
+
+       function renderTest() {
+            if (!rendered && waitBeforeRendering.length == 0) {
+                rendered = true;
+                stores.server.off('*');
+                res.render('index', {mainTag: 'main', tagOpts: {'stores': stores}});
+            }
+        }
+        // Subscribe to all events
+        if (req.waitBeforeRendering) {
+            req.waitBeforeRendering.forEach((eventName) => {
+                stores.server.on(eventName, () => {
+                    waitBeforeRendering = _.without(waitBeforeRendering, eventName);
+                    renderTest();
+                });
+            });
+        }
+        renderTest(); 
     }
 });
 
@@ -59,7 +85,7 @@ routes.runRoutingTable(app);
 // Server routes
 let server = app.configure(feathers.rest())
   .use(bodyParser.json())
-  .use('/service/fruit', fruitService)
+  .use('/service/fruit', services.fruit)
   .listen(3000, () => {
 
     let host = server.address().address

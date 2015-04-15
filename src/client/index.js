@@ -5,39 +5,55 @@ import main from '../app/components/main';
 import pageExpressMapper from 'page.js-express-mapper.js';
 import page from 'page';
 import routes from '../app/routes';
-
-import fruitStore from '../app/stores/fruit-store';
+import stores from '../app/stores';
+import RiotControl from 'riotcontrol';
+import _ from 'underscore'
 
 window.page = page;
+
+let loadContext = {};
 
 
 // activate express-mapper plugin
 pageExpressMapper({
     renderMethod: null,
     expressAppName: 'app'
-    });
+});
 
 
-routes.runRoutingTable(window.app);
+routes.runRoutingTable(window.app, loadContext);
 
 page();
 
+console.log("Context after routing ", loadContext);
 
-// Check if the main tag was loaded
-let mainTag = document.querySelector('main');
-if (mainTag) {
-    startApp();        
-} 
-else {
-    // Wait for full page load
-    window.onload = function() {
-        console.log("Page loaded!");
-        startApp();
-    }
+let rendered = false;
+let waitBeforeRendering = [];
+if (loadContext.waitBeforeRendering) {
+    // Create a copy
+    waitBeforeRendering = loadContext.waitBeforeRendering.slice();
 }
 
-function startApp() {
-    riot.mount('main', {fruitStore: fruitStore});
+function renderTest() {
+     if (!rendered && waitBeforeRendering.length == 0 && document.querySelector('main')) {
+         rendered = true;
+         stores.server.off('*');
+         riot.mount('main', {stores: stores});
+     }
+}
+ // Subscribe to all events
+if (loadContext.waitBeforeRendering) {
+     loadContext.waitBeforeRendering.forEach((eventName) => {
+         stores.server.on(eventName, () => {
+             waitBeforeRendering = _.without(waitBeforeRendering, eventName);
+             renderTest();
+         });
+     });
 }
 
+renderTest(); 
+window.onload = function() {
+    console.log("Page loaded!");
+    renderTest();
+}
 

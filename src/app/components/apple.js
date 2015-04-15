@@ -5,7 +5,7 @@ riot.tag('apple', `
 
  <h1>We sell apples:</h1>
  <ul>
-     <li each="{ name, i in opts.store.fruitData.types  }">
+     <li each="{ name, i in data.types  }">
          <div>{name}</div>
      </li>
  </ul>
@@ -20,10 +20,21 @@ riot.tag('apple', `
  </style>
  `,
  function(opts) {
-     let store = opts.store;
-     store.on("fruit_data_updated", () => {
-         console.log("Fruit data updated!");
+    let store = opts.store;
+    this.data = {types: []};
+    if (opts.store.fruitData) {
+        this.data.types = opts.store.fruitData.types;
+    }
+    console.log("Apple Tag: ", this.data);
+    store.on("fruit_data_updated", () => {
+         this.data.types = store.fruitData.types;
+         console.log("Apple Data update: ", this.data);
          this.update();
-     });
+    });
+    store.on("fruit_swap", () => {
+        this.data.types = [];
+        console.log("Apple fruit swap");
+        this.update();
+    });
 });
 

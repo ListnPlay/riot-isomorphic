@@ -2,7 +2,6 @@
 import riot from 'riot';
 import RiotControl from 'riotcontrol';
 import fetch from 'isomorphic-fetch';
-import Q from 'q';
 
 function FruitStore() {
     console.log("Init FruitStore");
@@ -13,12 +12,14 @@ function FruitStore() {
     this.on("fruit_swap", async function (fruit) { 
         try {
             this.currentFruit = fruit;
+            this.fruitData = null;
 
             if (fruit) {
                 // Get fruit types
                 console.log("Getting info for ", fruit);
                 let response = await fetch('http://localhost:3000/service/fruit/' + fruit);
                 this.fruitData = await response.json();
+                console.log(this.fruitData);
                 RiotControl.trigger("fruit_data_updated");
             }
         }
