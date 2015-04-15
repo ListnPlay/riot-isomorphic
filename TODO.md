@@ -1,2 +1,2 @@
 # TODO
-+ Wrap Primus isomorphically
++ Wrap Primus isomorphically and promisified
