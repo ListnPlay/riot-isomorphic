@@ -1,13 +1,15 @@
 # Isomorphic Riot
 An attempt for an isomorphic appliction using RiotJS 2. Includes:
-+ ES6 code base using Babel transpiler and Browserify.
++ ES6 code base using Babel transpiler and Browserify. **With ES7 async/await**
+_SystemJS example available in the 'systemjs' branch_
 + Shared routing code between client and server using [Page.js](https://visionmedia.github.io/page.js/) and [Page.JS-Express-Mapper](https://github.com/kethinov/page.js-express-mapper.js).
 + Riot rendering on the server side using riot.render() and a custom template engine.
++ Server services powered by [Feathers.js](http://feathersjs.com/)
 + Flux architecture with help of [RiotControl](https://github.com/jimsparkman/RiotControl/) - Also used for routing logic.
++ *waitBeforeRendering* - waits for events to occur before rendering the main tag
 + ES6 riot tag files without using the *.tag extension.
 + Support for Autoprefixer - Gulp tasks extract css from javascript tags, concatinate them and run postprocessing.
 + Gulp based tasks for running the node app using [gulp-live-server](https://github.com/gimm/gulp-live-server) or optionally run solely on the client using [BrowserSync](http://www.browsersync.io/).
-+ *Currenly uses our own fork of RiotJS 2.0.14@master to remove the unnecessary compiler requirment from the node module*
 
 Install
 (*Make sure you have the latest version of JSPM before installing. The node version I used was 0.11.16*.):
