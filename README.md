@@ -12,7 +12,6 @@ An attempt for an isomorphic appliction using RiotJS 2. Includes:
 + Gulp based tasks for running the node app using [gulp-live-server].
 
 Install
-(*Make sure you have the latest version of JSPM before installing. The node version I used was 0.11.16*.):
 ```
 npm install -g gulp
 npm install
