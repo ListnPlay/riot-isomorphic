@@ -3,7 +3,6 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var rimraf = require('rimraf');
-var browserSync = require('browser-sync');
 var runSequence = require('run-sequence');
 var gls = require('gulp-live-server');
 var replace = require('gulp-replace');
@@ -26,24 +25,6 @@ var watchEvent;
 * 1. Setup a webserver with livereload using BrowserSync
 * 2. JS and CSS get processed and served from the 'build' folder
 * */
-
- // BrowserSync Server
-gulp.task('browser-sync', function() {
-  browserSync.init([
-    './build/css/*.css',
-    './build/js/**/*.js',
-    './**/*.html'
-  ],
-  {
-    notify: false,
-    server: {
-      baseDir: ['./']
-    },
-    port: 3500,
-    browser: [],
-    tunnel: false
-  });;
-});
 
 // ENV
 gulp.task('env', function() {
@@ -133,19 +114,6 @@ gulp.task('reload-server', ['public'], function() {
 });
 
 
-gulp.task('browser', ['browser-sync', 'html', 'js'] , function(cb) {
-
-  plugins.watch(
-      './src/**/*.js',
-      {
-        name: 'JS'
-      },
-      function() {
-        gulp.start('js');
-      }
-  );
-});
-
 // Delete build Directory
 gulp.task('delete-build', function() {
   rimraf('./build', function(err) {
@@ -171,63 +139,5 @@ gulp.task('default', ['serve']);
 
 
 
-// DISTRIBUTION TASKS
+// DISTRIBUTION TASKS (TODO)
 //===============================================
-
-// Delete dist Directory
-gulp.task('delete-dist', function() {
-  rimraf('./dist', function(err) {
-  });
-});
-
-gulp.task('public-dist', ['html-dist', 'js', 'css'], function() {
-  gulp.src('build/app/**/*.css')
-  .pipe(gulp.dest('public/build/app'));
-
-gulp.src('build/index.html')
-.pipe(gulp.dest('public/build'));
-
-  gulp.src('dist/client/**/*.js')
-    .pipe(gulp.dest('public/dist/client'));
-});
-
-gulp.task('html-dist', function() {
-   gulp.src(['./dist-src/index.html'])
-  .pipe(gulp.dest('./build'));
-});
-
-// Bundle with jspm
-gulp.task('bundle', ['js'], plugins.shell.task([
-     // Server bundle? Don't need for now
-    // 'jspm bundle-sfx server/index dist/server/bundle.js',
-    // Client bundle
-    'jspm bundle-sfx client/index dist/client/bundle.js'
-]));
-
-// Uglify the bundle
-gulp.task('uglify', function() {
-  return gulp.src('./dist/js/app.js')
-    .pipe(plugins.sourcemaps.init({loadMaps: true}))
-    .pipe(plugins.uglify())
-    .pipe(plugins.sourcemaps.write('.'))
-    .pipe(plugins.rename('app.min.js'))
-    .pipe(gulp.dest('./dist/js'))
-    .on('error', plugins.util.log);
-});
-
-gulp.task('dist', function() {
-  runSequence(
-    'delete-dist',
-    'bundle',
-    'public-dist',
-    'serve-dist'
-    // 'uglify'
-  );
-});
-
-gulp.task('serve-dist', ['env'] , function(cb) {
-  var server = gls.new('app.js');
-  server.start();
-
-});
-
