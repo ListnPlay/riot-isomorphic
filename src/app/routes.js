@@ -30,16 +30,21 @@ class Routes {
 
         app.route('/apple').get((req, res) => {
 
-            this.waitBeforeRendering(req, ["fruit_data_updated"]);
+            //  this.waitBeforeRendering(req, ["fruit_data_updated"]);
 
             RiotControl.trigger("fruit_swap", "apple");
         });
 
         app.route('/banana').get((req, res) => {
+
             this.waitBeforeRendering(req, ["fruit_data_updated"]);
             console.log("Triggering banana fruit_swap")
             RiotControl.trigger("fruit_swap", "banana");
         });
+
+        app.route('/login').get((req, res) => {
+            RiotControl.trigger("main_state", "login");
+        })
     }
 };
 

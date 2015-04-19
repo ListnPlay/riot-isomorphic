@@ -1,15 +1,21 @@
 'use strict';
 
 import riot from 'riot';
-import main from '../app/components/main';
+import passport from 'passport'
 
 import feathers from 'feathers';
+import feathersPassport from 'feathers-passport';
+import hooks from 'feathers-hooks';
+
 import bodyParser from 'body-parser';
+import session from 'express-session';
 
 import Q from 'q';
 import FS from 'fs';
 import _ from 'underscore'
 
+
+import main from '../app/components/main';
 import routes from '../app/routes';
 
 import services from './services';
@@ -82,6 +88,8 @@ app.use(function (req, res, next) {
 // Client routes
 routes.runRoutingTable(app);
 
+console.log("Starting server");
+
 // Server routes
 let server = 
     app.configure(
@@ -92,9 +100,18 @@ let server =
 
     }, function(primus) {
     }))
+    .configure(hooks())
     .use(bodyParser.json())
+    .configure(feathersPassport({
+        secret: 'eat-your-fruits',
+        // In production use RedisStore
+        store: new session.MemoryStore(),
+        resave: true,
+        saveUninitialized: true
+    }))
     .use('/service/fruit', services.fruit)
     .use('/service/taste', services.taste)
+    .use('/service/users', services.users)
     .listen(3000, () => {
 
     let host = server.address().address
@@ -102,3 +119,7 @@ let server =
 
     console.log('Node/Feathers app listening at http://%s:%s', host, port);
 });
+
+
+// Insert service hooks
+services.users.insertHooks(app.service('service/users'));
