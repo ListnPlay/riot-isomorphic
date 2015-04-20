@@ -1,5 +1,7 @@
 import memory from 'feathers-memory';
 import crypto from 'crypto';
+import passport from 'passport'
+import passportLocal from 'passport-local'
 
 // An In-memory CRUD service
 let userService = memory();
@@ -32,6 +34,70 @@ userService.createTestUser = (service) => {
         password: '1234'
     }, {}, function(error, user) {
         console.log('Created default user', user);
+    });
+}
+
+userService.setupPassport = (service, app) => {
+    // Passport authentictation
+    // ----------------------------------
+
+    // Use the id to serialize the user
+    const LocalStrategy = passportLocal.Strategy;
+
+    passport.serializeUser(function(user, done) {
+      done(null, user.id);
+    });
+
+    // Deserialize the user retrieving it form the user service
+    passport.deserializeUser(function(id, done) {
+      // Get the user service and then retrieve the user id
+      service.get(id, {}, done);
+    });
+
+    // Attach the local strategy
+    passport.use(new LocalStrategy(function(username, password, done) {
+        var query = {
+          username: username
+        };
+
+        service.find({ query: query }, function(error, users) {
+          if(error) {
+            return done(error);
+          }
+
+          var user = users[0];
+
+          if(!user) {
+            return done(new Error('User not found'));
+          }
+
+          // Compare the hashed password
+          if(user.password !== sha1(password)) {
+            return done(new Error('Password not valid'));
+          }
+
+          done(null, user);
+        });
+      }
+    ));
+
+    // RESTful Login service
+    app.post('/login', function(req, res, next) {
+        console.log("Login service: ", req.body);
+        passport.authenticate('local', (err, user, info) => {
+          console.log("Passport authenticate result - err: ", err, " user: ", user, " info: ", info);
+          if (err) {
+              res.send({
+                  status: "error",
+                  message: err.toString()
+              })
+          } else {
+              res.send({
+                  result: "success"
+              })
+          }
+
+        })(req, res, next);
     });
 }
 

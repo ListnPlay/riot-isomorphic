@@ -1,9 +1,8 @@
 'use strict';
 
 import riot from 'riot';
-import passport from 'passport'
-
 import feathers from 'feathers';
+
 import feathersPassport from 'feathers-passport';
 import hooks from 'feathers-hooks';
 
@@ -80,6 +79,13 @@ app.configure(
 .use('/taste', services.taste)
 .use('/users', services.users)
 
+// Authentication setup
+let userService = app.service('users');
+
+services.users.insertHooks(userService);
+services.users.createTestUser(userService);
+services.users.setupPassport(userService, app);
+
 app.use(function (req, res, next) {
 
     let rendered = false;
@@ -109,11 +115,7 @@ app.use(function (req, res, next) {
 });
 
 
-// Insert service hooks
-services.users.insertHooks(app.service('users'));
 
-// Create test user
-services.users.createTestUser(app.service('users'));
 
 console.log("Starting server");
 
