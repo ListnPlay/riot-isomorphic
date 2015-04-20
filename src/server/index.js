@@ -76,9 +76,9 @@ app.configure(
     resave: true,
     saveUninitialized: true
 }))
-.use('/service/fruit', services.fruit)
-.use('/service/taste', services.taste)
-.use('/service/users', services.users)
+.use('/fruit', services.fruit)
+.use('/taste', services.taste)
+.use('/users', services.users)
 
 app.use(function (req, res, next) {
 
@@ -110,10 +110,10 @@ app.use(function (req, res, next) {
 
 
 // Insert service hooks
-services.users.insertHooks(app.service('service/users'));
+services.users.insertHooks(app.service('users'));
 
 // Create test user
-services.users.createTestUser(app.service('service/users'));
+services.users.createTestUser(app.service('users'));
 
 console.log("Starting server");
 

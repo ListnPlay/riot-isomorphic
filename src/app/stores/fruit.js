@@ -17,7 +17,7 @@ function FruitStore() {
             if (fruit) {
                 // Get fruit types
                 console.log("Getting info for ", fruit);
-                let response = await fetch('http://localhost:3000/service/fruit/' + fruit);
+                let response = await fetch('http://localhost:3000/fruit/' + fruit);
                 this.fruitData = await response.json();
                 console.log(this.fruitData);
                 RiotControl.trigger("fruit_data_updated");
@@ -30,7 +30,7 @@ function FruitStore() {
 
     this.on("taste_fruit", function(type) {
         let primus = Primus.connect('http://localhost:3000');
-        primus.send('service/taste::get',type, function(error, result) {
+        primus.send('taste::get',type, function(error, result) {
             RiotControl.trigger('taste_result', {'type': type, 'result': result.result});
         });
     });
