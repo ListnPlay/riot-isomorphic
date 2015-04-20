@@ -5,6 +5,10 @@ import riot from 'riot';
 class Routes {
     constructor() {
         console.log("Routes class constructed!");
+        // Load Page.js on the client side
+        if (typeof window != 'undefined') {
+            this.page = require('page');
+        }
     }
 
     waitBeforeRendering(req, list) {

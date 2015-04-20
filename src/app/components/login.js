@@ -1,6 +1,8 @@
 import riot from 'riot';
 import RiotControl from 'riotcontrol';
 
+import routes from '../routes';
+
 riot.tag('login', `
 
   <form onsubmit="{ login }">
@@ -26,6 +28,9 @@ riot.tag('login', `
           </span>
       </div>
   </form>
+  <div if={errorMessage} class="login-error">
+    {{errorMessage}}          
+  </div>
 
   <p class="note"> * Default user/password: test/1234 * </p>
 
@@ -44,6 +49,11 @@ riot.tag('login', `
          font-size: 14px;
      }
 
+     login .login-error {
+         color: red;
+         font-weight: bold;
+     }
+
  </style>
  `,
  function(opts) {
@@ -56,6 +66,17 @@ riot.tag('login', `
             password: this.password.value
         });
     }
+
+    store.on("login_error", (message) => {
+        console.log("Received login error message: ", message);        
+        this.errorMessage = message;
+        this.update();
+    });
+
+    store.on("login_success", () => {
+        console.log("Logged in");        
+        routes.page.show("/");
+    });
 });
 
 

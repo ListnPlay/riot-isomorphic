@@ -82,22 +82,45 @@ userService.setupPassport = (service, app) => {
     ));
 
     // RESTful Login service
-    app.post('/login', function(req, res, next) {
+    app.post('/login', async function(req, res, next) {
         console.log("Login service: ", req.body);
-        passport.authenticate('local', (err, user, info) => {
-          console.log("Passport authenticate result - err: ", err, " user: ", user, " info: ", info);
-          if (err) {
-              res.send({
-                  status: "error",
-                  message: err.toString()
-              })
-          } else {
-              res.send({
-                  result: "success"
-              })
-          }
 
-        })(req, res, next);
+        let passportLogin = (req, res, next) => {
+            return new Promise((resolve, reject) => {
+                passport.authenticate('local', (err, user, info) => {
+                  console.log("Passport authenticate result - err: ", err, " user: ", user, " info: ", info);
+                  if (err) {
+                      reject(err.toString());
+                  } else {
+                      req.logIn(user, function(err) {
+                          if (err) {
+                              reject(err.toString());
+                          } else {
+                              resolve(user);
+                          }
+                      });
+                  }
+
+                })(req, res, next);
+            });
+        }
+
+        try {
+            let user = await passportLogin(req, res, next);
+            res.send({
+                  status: "success",
+                  data: {
+                      user : user 
+                  }
+            })
+        }
+        catch (error) {
+            res.send({
+                status: "error",
+                message: error
+            })
+        }
+        
     });
 }
 
