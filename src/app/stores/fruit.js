@@ -31,7 +31,11 @@ function FruitStore() {
     this.on("taste_fruit", function(type) {
         let primus = Primus.connect('http://localhost:3000');
         primus.send('taste::get',type, function(error, result) {
-            RiotControl.trigger('taste_result', {'type': type, 'result': result.result});
+            if (error) { 
+                RiotControl.trigger('taste_error', {message: error});
+            } else {
+                RiotControl.trigger('taste_result', {'type': type, 'result': result.result});
+            }
         });
     });
 };

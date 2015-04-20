@@ -16,6 +16,9 @@ riot.tag('apple', `
  <div show='{ tasteResult }'>
      <p> Tried a {tasteResult.type} and it was {tasteResult.result} </p>
  </div>
+ <div show='{ tasteError }'>
+    <p>{tasteError}</p>
+ </div>
  
  <style>
      apple h1 {
@@ -36,6 +39,8 @@ riot.tag('apple', `
     });
     store.on("fruit_swap", () => {
         this.data = {types: []};
+        this.tasteError = null;
+        this.tasteResult = null;
         this.update();
     });
 
@@ -48,6 +53,12 @@ riot.tag('apple', `
     store.on('taste_result', (data) => {
       console.log("Taste result!", data);  
       this.tasteResult = data;
+      this.update();
+    });
+
+    store.on('taste_error', (error) => {
+      console.log("Taste error!", error.message);  
+      this.tasteError = error.message;
       this.update();
     });
 });
