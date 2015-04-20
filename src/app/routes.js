@@ -7,11 +7,16 @@ class Routes {
         console.log("Routes class constructed!");
     }
 
-    
     waitBeforeRendering(req, list) {
         req.waitBeforeRendering = list;
         if (this.context) {
             this.context.waitBeforeRendering = list;
+        }
+    }
+
+    go(next) {
+        if (next) {
+            next();
         }
     }
 
@@ -23,27 +28,34 @@ class Routes {
 
         //============Routing Table============//
         //                                     //
-        app.route('/').get((req, res) => {
+        app.route('/').get((req, res, next) => {
             console.log("Default route!")
             RiotControl.trigger("fruit_swap", null);
+
+            this.go(next);
         });
 
-        app.route('/apple').get((req, res) => {
+        app.route('/apple').get((req, res, next) => {
 
-            //  this.waitBeforeRendering(req, ["fruit_data_updated"]);
-
+            this.waitBeforeRendering(req, ["fruit_data_updated"]);
             RiotControl.trigger("fruit_swap", "apple");
+
+            this.go(next);
+
         });
 
-        app.route('/banana').get((req, res) => {
-
+        app.route('/banana').get((req, res, next) => {
             this.waitBeforeRendering(req, ["fruit_data_updated"]);
             console.log("Triggering banana fruit_swap")
             RiotControl.trigger("fruit_swap", "banana");
+
+            this.go(next);
         });
 
-        app.route('/login').get((req, res) => {
+        app.route('/login').get((req, res, next) => {
             RiotControl.trigger("main_state", "login");
+
+            this.go(next);
         })
     }
 };

@@ -53,66 +53,73 @@ app.engine('html', function (filePath, options, callback) {
 app.set('views', './build/'); // specify the views directory
 app.set('view engine', 'html'); // register the template engine
 
-app.use(function (req, res, next) {
-    next(); // Process routes
-    // don't render view for file requests or services
-
-    if(!req.path.match(/^.*\.[\w]+$/) && !req.path.match(/^\/service.*$/)) {
-        let rendered = false;
-        let waitBeforeRendering = [];
-        if (req.waitBeforeRendering) {
-            // Create a copy
-            waitBeforeRendering = req.waitBeforeRendering.slice();
-        }
-
-       function renderTest() {
-            if (!rendered && waitBeforeRendering.length == 0) {
-                rendered = true;
-                stores.server.off('*');
-                res.render('index', {mainTag: 'main', tagOpts: {'stores': stores}});
-            }
-        }
-        // Subscribe to all events
-        if (req.waitBeforeRendering) {
-            req.waitBeforeRendering.forEach((eventName) => {
-                stores.server.on(eventName, () => {
-                    waitBeforeRendering = _.without(waitBeforeRendering, eventName);
-                    renderTest();
-                });
-            });
-        }
-        renderTest(); 
-    }
-});
 
 // Client routes
 routes.runRoutingTable(app);
+
+
+// Server routes
+app.configure(
+    feathers.rest()
+)
+.configure(feathers.primus({
+    transformer: 'websockets'
+
+}, function(primus) {
+}))
+.configure(hooks())
+.use(bodyParser.json())
+.configure(feathersPassport({
+    secret: 'eat-your-fruits',
+    // In production use RedisStore
+    store: new session.MemoryStore(),
+    resave: true,
+    saveUninitialized: true
+}))
+.use('/service/fruit', services.fruit)
+.use('/service/taste', services.taste)
+.use('/service/users', services.users)
+
+app.use(function (req, res, next) {
+
+    let rendered = false;
+    let waitBeforeRendering = [];
+    if (req.waitBeforeRendering) {
+        // Create a copy
+        waitBeforeRendering = req.waitBeforeRendering.slice();
+    }
+
+   function renderTest() {
+        if (!rendered && waitBeforeRendering.length == 0) {
+            rendered = true;
+            stores.server.off('*');
+            res.render('index', {mainTag: 'main', tagOpts: {'stores': stores}});
+        }
+    }
+    // Subscribe to all events
+    if (req.waitBeforeRendering) {
+        req.waitBeforeRendering.forEach((eventName) => {
+            stores.server.on(eventName, () => {
+                waitBeforeRendering = _.without(waitBeforeRendering, eventName);
+                renderTest();
+            });
+        });
+    }
+    renderTest(); 
+});
+
+
+// Insert service hooks
+services.users.insertHooks(app.service('service/users'));
+
+// Create test user
+services.users.createTestUser(app.service('service/users'));
 
 console.log("Starting server");
 
 // Server routes
 let server = 
-    app.configure(
-        feathers.rest()
-    )
-    .configure(feathers.primus({
-        transformer: 'websockets'
-
-    }, function(primus) {
-    }))
-    .configure(hooks())
-    .use(bodyParser.json())
-    .configure(feathersPassport({
-        secret: 'eat-your-fruits',
-        // In production use RedisStore
-        store: new session.MemoryStore(),
-        resave: true,
-        saveUninitialized: true
-    }))
-    .use('/service/fruit', services.fruit)
-    .use('/service/taste', services.taste)
-    .use('/service/users', services.users)
-    .listen(3000, () => {
+    app.listen(3000, () => {
 
     let host = server.address().address
     let port = server.address().port
@@ -120,6 +127,3 @@ let server =
     console.log('Node/Feathers app listening at http://%s:%s', host, port);
 });
 
-
-// Insert service hooks
-services.users.insertHooks(app.service('service/users'));

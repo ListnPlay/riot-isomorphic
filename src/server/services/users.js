@@ -25,13 +25,16 @@ userService.insertHooks = (service) => {
     });
 }
 
-// Test
-userService.create({
-    username: 'test',
-    password: '1234'
-}, {}, function(error, user) {
-    console.log('Created default user', user);
-});
+userService.createTestUser = (service) => {
+    // Test
+    service.create({
+        username: 'test',
+        password: '1234'
+    }, {}, function(error, user) {
+        console.log('Created default user', user);
+    });
+}
+
 
 export default userService;
 
