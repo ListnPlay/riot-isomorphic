@@ -19,8 +19,9 @@ function FruitStore() {
             if (fruit) {
                 // Get fruit types
                 console.log("Getting info for ", fruit);
-                let response = await fetch('http://localhost:3000/fruit/' + fruit);
-                this.fruitData = await response.json();
+                /* let response = await fetch('http://localhost:3000/fruit/' + fruit);
+                   this.fruitData = await response.json();*/
+                this.fruitData = await socketUtil.rpc('fruit::get', fruit);
                 console.log("Fruit data: ",this.fruitData);
                 RiotControl.trigger("fruit_data_updated");
             }

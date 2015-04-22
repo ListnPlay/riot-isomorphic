@@ -2,6 +2,7 @@
 // Users primus.js
 
 import PrimusNode from 'primus';
+import PrimusEmitter from 'primus-emitter';
 
 class SocketUtil {
     constructor() {
@@ -18,7 +19,13 @@ class SocketUtil {
         } else {
             // Server init
             console.log("Socket util - Server init with URL: ", url);
-            let Socket = PrimusNode.createSocket({ transformer: 'websockets', parser: 'json'  });
+            let Socket = PrimusNode.createSocket({
+                transformer: 'websockets',
+                parser: 'json',
+                plugin: {
+                    'emitter' : PrimusEmitter
+                }
+            });
             this.client = new Socket(url);
         }
         this.client.on('open', () => {
