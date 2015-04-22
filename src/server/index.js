@@ -22,6 +22,8 @@ import stores from '../app/stores';
 
 import RiotControl from 'riotcontrol';
 
+import socketUtil from '../app/util/socket';
+
 let app = feathers();
 
 let publicFiles = [];
@@ -127,5 +129,9 @@ let server =
     let port = server.address().port
 
     console.log('Node/Feathers app listening at http://%s:%s', host, port);
+
+
+    // Init the loopback socket connection
+    socketUtil.initWithUrl('http://localhost:3000');
 });
 

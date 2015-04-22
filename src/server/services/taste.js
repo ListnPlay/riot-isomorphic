@@ -1,5 +1,6 @@
 const tasteService = {
     get: function(fruitName, params) {
+        console.log("Taste service! fruit: ", fruitName, " params: ", params);
         return new Promise((resolve, reject) => {
             if (!params.user) {
                 reject("Only logged in users are allowed to taste the fruit");

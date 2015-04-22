@@ -3,6 +3,8 @@ import riot from 'riot';
 import RiotControl from 'riotcontrol';
 import fetch from 'isomorphic-fetch';
 
+import socketUtil from '../util/socket'
+
 function FruitStore() {
     console.log("Init FruitStore");
 
@@ -19,7 +21,7 @@ function FruitStore() {
                 console.log("Getting info for ", fruit);
                 let response = await fetch('http://localhost:3000/fruit/' + fruit);
                 this.fruitData = await response.json();
-                console.log(this.fruitData);
+                console.log("Fruit data: ",this.fruitData);
                 RiotControl.trigger("fruit_data_updated");
             }
         }
@@ -28,15 +30,15 @@ function FruitStore() {
         }
     });
 
-    this.on("taste_fruit", function(type) {
-        let primus = Primus.connect('http://localhost:3000');
-        primus.send('taste::get',type, function(error, result) {
-            if (error) { 
-                RiotControl.trigger('taste_error', {message: error});
-            } else {
-                RiotControl.trigger('taste_result', {'type': type, 'result': result.result});
-            }
-        });
+    this.on("taste_fruit", async function(type) {
+        try {
+            let result = await socketUtil.rpc('taste::get', type);
+            RiotControl.trigger('taste_result', {'type': type, 'result': result.result});
+        }
+        catch (error) {
+            console.log("Taste fruit error ", error);
+            RiotControl.trigger('taste_error', {message: error});
+        }
     });
 };
 

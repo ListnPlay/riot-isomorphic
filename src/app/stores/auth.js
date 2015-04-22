@@ -2,6 +2,7 @@
 import riot from 'riot';
 import RiotControl from 'riotcontrol';
 import fetchUtil from '../util/fetch';
+import socketUtil from '../util/socket';
 
 function AuthStore() {
     console.log("Init AuthStore");
@@ -19,6 +20,8 @@ function AuthStore() {
                 RiotControl.trigger("login_error", response.message);
             } else if (response.status == "success") {
                 this.user = response.data.user;
+                // Reconnect the socket to gain session auth
+                socketUtil.reconnect();
                 RiotControl.trigger("login_success", response.data.user);
             }
         }

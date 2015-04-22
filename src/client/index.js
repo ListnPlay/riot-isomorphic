@@ -1,6 +1,8 @@
 'use strict';
 
 import riot from 'riot';
+import socketUtil from '../app/util/socket';
+
 import main from '../app/components/main';
 import pageExpressMapper from 'page.js-express-mapper.js';
 import page from 'page';
@@ -9,10 +11,10 @@ import stores from '../app/stores';
 import RiotControl from 'riotcontrol';
 import _ from 'underscore'
 
+
 window.page = page;
 
 let loadContext = {};
-
 
 // activate express-mapper plugin
 pageExpressMapper({
@@ -20,6 +22,7 @@ pageExpressMapper({
     expressAppName: 'app'
 });
 
+socketUtil.initWithUrl('http://localhost:3000');
 
 routes.runRoutingTable(window.app, loadContext);
 
@@ -38,6 +41,7 @@ function renderTest() {
      if (!rendered && waitBeforeRendering.length == 0 && document.querySelector('main')) {
          rendered = true;
          stores.server.off('*');
+         console.log("Rendering client");
          riot.mount('main', {stores: stores});
      }
 }
