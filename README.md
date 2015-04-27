@@ -6,7 +6,7 @@ An attempt for an isomorphic appliction using RiotJS 2. Includes:
 + Riot rendering on the server side using riot.render() and a custom template engine.
 + Server services powered by [Feathers.js](http://feathersjs.com/) with Realtime WebSocket communication using Primus.
 + User authentication using [Passport.js](http://passportjs.org/)
-+ Flux architecture with help of [RiotControl](https://github.com/jimsparkman/RiotControl/) - Also used for routing logic.
++ **NEW: Flux architecture with custom dispatcher/store classes, that can be instatinated per server request. Inspired by [RiotControl](https://github.com/jimsparkman/RiotControl/) and [dispatchr](https://github.com/yahoo/dispatchr/)**
 + *waitBeforeRendering* - waits for events to occur before rendering the main tag
 + ES6 riot tag files without using the *.tag extension.
 + Support for Autoprefixer - Gulp tasks extract css from javascript tags, concatinate them and run postprocessing.
