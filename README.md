@@ -1,6 +1,6 @@
 # Isomorphic Riot
 An attempt for an isomorphic appliction using RiotJS 2. Includes:
-+ ES6 code base using Babel transpiler and Browserify. **With ES7 async/await**
++ ES6 code base using Babel transpiler and Browserify. With ES7 async/await
 (_SystemJS example available in the 'systemjs' branch_)
 + Shared routing code between client and server using [Page.js](https://visionmedia.github.io/page.js/) and [Page.JS-Express-Mapper](https://github.com/kethinov/page.js-express-mapper.js).
 + Riot rendering on the server side using riot.render() and a custom template engine.
