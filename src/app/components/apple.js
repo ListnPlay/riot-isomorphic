@@ -1,6 +1,5 @@
 'use strict'
 import riot from 'riot';
-import RiotControl from 'riotcontrol';
 
 riot.tag('apple', `
 
@@ -30,14 +29,17 @@ riot.tag('apple', `
  </style>
  `,
  function(opts) {
+    console.log("Init Apple tag");
     let store = opts.store;
+    let observer = store.observer;
+
     this.data = store.fruitData;
 
-    store.on("fruit_data_updated", () => {
+    observer.on("fruit_data_updated", () => {
          this.data = store.fruitData;
          this.update();
     });
-    store.on("fruit_swap", () => {
+    observer.on("fruit_swap", () => {
         this.data = {types: []};
         this.tasteError = null;
         this.tasteResult = null;
@@ -47,16 +49,16 @@ riot.tag('apple', `
     this.try = () => {
         let typeToTry = this.data.types[Math.floor((Math.random() * this.data.types.length))]; 
         console.log("Trying ", typeToTry);
-        RiotControl.trigger("taste_fruit", typeToTry);
+        opts.dispatcher.trigger("taste_fruit", typeToTry);
     }
 
-    store.on('taste_result', (data) => {
+    observer.on('taste_result', (data) => {
       console.log("Taste result!", data);  
       this.tasteResult = data;
       this.update();
     });
 
-    store.on('taste_error', (error) => {
+    observer.on('taste_error', (error) => {
       console.log("Taste error!", error.message);  
       this.tasteError = error.message;
       this.update();

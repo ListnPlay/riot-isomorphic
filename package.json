@@ -37,7 +37,6 @@
     "primus-emitter": "^3.1.0",
     "q": "^1.2.0",
     "riot": "^2.0.14",
-    "riotcontrol": "0.0.1",
     "underscore": "^1.8.3",
     "ws": "^0.7.1"
   }

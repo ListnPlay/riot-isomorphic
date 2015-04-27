@@ -1,37 +1,34 @@
 'use strict'
 import riot from 'riot';
-import RiotControl from 'riotcontrol';
 import fetchUtil from '../util/fetch';
 import socketUtil from '../util/socket';
 
-function AuthStore() {
-    console.log("Init AuthStore");
-    riot.observable(this);
+import Store from './store';
 
-    this.user = null;
+export default class AuthStore extends Store {
+    constructor(dispatcher) {
+        super(dispatcher);
+        console.log("Init AuthStore");
+        this.user = null;
 
-    this.on("user_login", async function (loginData) { 
-        try {
-            console.log("User login: ", loginData);
-            let post = await fetchUtil.postJSON("http://localhost:3000/login", loginData);
-            let response = await post.json();
-            console.log("Login reply: ", response);
-            if (response.status == "error") {
-                RiotControl.trigger("login_error", response.message);
-            } else if (response.status == "success") {
-                this.user = response.data.user;
-                // Reconnect the socket to gain session auth
-                socketUtil.reconnect();
-                RiotControl.trigger("login_success", response.data.user);
+        this.observer.on("user_login", async (loginData) => { 
+            try {
+                console.log("User login: ", loginData);
+                let post = await fetchUtil.postJSON("http://localhost:3000/login", loginData);
+                let response = await post.json();
+                console.log("Login reply: ", response);
+                if (response.status == "error") {
+                    this.dispatcher.trigger("login_error", response.message);
+                } else if (response.status == "success") {
+                    this.user = response.data.user;
+                    // Reconnect the socket to gain session auth
+                    socketUtil.reconnect();
+                    this.dispatcher.trigger("login_success", response.data.user);
+                }
             }
-        }
-        catch (e) {
-            console.log("Error logging in", e);                    
-        }
-    });
+            catch (e) {
+                console.log("Error logging in", e);                    
+            }
+        });
+    }     
 };
-
-
-let instance = new AuthStore();
-RiotControl.addStore(instance);
-export default instance;

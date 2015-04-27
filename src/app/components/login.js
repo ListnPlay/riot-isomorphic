@@ -1,6 +1,4 @@
 import riot from 'riot';
-import RiotControl from 'riotcontrol';
-
 import routes from '../routes';
 
 riot.tag('login', `
@@ -61,19 +59,19 @@ riot.tag('login', `
 
     this.login = (e) => {
         console.log("Logging in with: ", this.username.value, "/", this.password.value);
-        RiotControl.trigger("user_login", {
+        opts.dispatcher.trigger("user_login", {
             username: this.username.value,
             password: this.password.value
         });
     }
 
-    store.on("login_error", (message) => {
+    store.observer.on("login_error", (message) => {
         console.log("Received login error message: ", message);        
         this.errorMessage = message;
         this.update();
     });
 
-    store.on("login_success", () => {
+    store.observer.on("login_success", () => {
         console.log("Logged in");        
         routes.page.show("/");
     });

@@ -7,7 +7,7 @@ riot.tag('mall', `
  <h1>Welcome to the fruit shopping mall</h1>
  <a href="/banana">Visit banana store</a>
  <a href="/apple">Visit apple store</a>
- <apple if={opts.store.currentFruit=='apple'} store={opts.store}></apple>
+ <apple if={opts.store.currentFruit=='apple'} store={opts.store} dispatcher={opts.dispatcher}></apple>
  <banana if={opts.store.currentFruit=='banana'} store={opts.store}></banana>
  <style>
      mall {
@@ -19,8 +19,8 @@ riot.tag('mall', `
  `,
  function(opts) {
     let store = opts.store;
-    store.on('fruit_swap', (fruit) => {
-        console.log("Mall - fruit swap!! " + fruit);
+    store.observer.on('fruit_swap', (fruit) => {
+        console.log("Mall - fruit swap!! ", opts, this);
         this.update();
     });
 });

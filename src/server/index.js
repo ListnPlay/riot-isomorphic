@@ -18,15 +18,10 @@ import main from '../app/components/main';
 import routes from '../app/routes';
 
 import services from './services';
-import stores from '../app/stores';
-
-import RiotControl from 'riotcontrol';
 
 import socketUtil from '../app/util/socket';
 
 let app = feathers();
-
-let publicFiles = [];
 
 // Escape the SystemJS dir
 app.use(feathers.static(process.env.APP_BASE_PATH + "/public"));
@@ -44,6 +39,7 @@ app.engine('html', function (filePath, options, callback) {
         }
         catch (e) {
             console.log("App engine error: ", e, " Filepath: ", filePath, " Callback: ", callback);
+            console.log(e.stack);
             return;
         }
     }
@@ -100,14 +96,14 @@ app.use(function (req, res, next) {
    function renderTest() {
         if (!rendered && waitBeforeRendering.length == 0) {
             rendered = true;
-            stores.server.off('*');
-            res.render('index', {mainTag: 'main', tagOpts: {'stores': stores}});
+            req.dispatcher.stores.server.observer.off('*');
+            res.render('index', {mainTag: 'main', tagOpts: {'stores': req.dispatcher.stores, 'dispatcher': req.dispatcher}});
         }
     }
     // Subscribe to all events
     if (req.waitBeforeRendering) {
         req.waitBeforeRendering.forEach((eventName) => {
-            stores.server.on(eventName, () => {
+            req.dispatcher.stores.server.observer.on(eventName, () => {
                 waitBeforeRendering = _.without(waitBeforeRendering, eventName);
                 renderTest();
             });

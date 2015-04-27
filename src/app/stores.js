@@ -1,13 +1,13 @@
-import fruitStore from './stores/fruit';
-import serverStore from './stores/server';
-import authStore from './stores/auth';
-import mainStore from './stores/main';
+import FruitStore from './stores/fruit';
+import ServerStore from './stores/server';
+import AuthStore from './stores/auth';
+import MainStore from './stores/main';
 
-const stores = {
-    fruit: fruitStore,
-    server: serverStore,
-    auth: authStore,
-    main: mainStore
+export default class Stores {
+    constructor(dispatcher) {
+        this.fruit = new FruitStore(dispatcher);
+        this.server = new ServerStore(dispatcher);
+        this.auth = new AuthStore(dispatcher);
+        this.main = new MainStore(dispatcher);
+    }
 };
-
-export default stores;

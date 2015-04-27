@@ -7,8 +7,7 @@ import main from '../app/components/main';
 import pageExpressMapper from 'page.js-express-mapper.js';
 import page from 'page';
 import routes from '../app/routes';
-import stores from '../app/stores';
-import RiotControl from 'riotcontrol';
+
 import _ from 'underscore'
 
 
@@ -40,15 +39,15 @@ if (loadContext.waitBeforeRendering) {
 function renderTest() {
      if (!rendered && waitBeforeRendering.length == 0 && document.querySelector('main')) {
          rendered = true;
-         stores.server.off('*');
+         routes.browserDispather.stores.server.observer.off('*');
          console.log("Rendering client");
-         riot.mount('main', {stores: stores});
+         riot.mount('main', {stores: routes.browserDispather.stores, dispatcher: routes.browserDispather});
      }
 }
  // Subscribe to all events
 if (loadContext.waitBeforeRendering) {
      loadContext.waitBeforeRendering.forEach((eventName) => {
-         stores.server.on(eventName, () => {
+         routes.browserDispather.stores.server.observer.on(eventName, () => {
              waitBeforeRendering = _.without(waitBeforeRendering, eventName);
              renderTest();
          });

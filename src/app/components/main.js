@@ -6,9 +6,9 @@ import login from './login';
 
 riot.tag('main', `
 
-<account-status store={opts.stores.auth}></account-status>
-<mall if={opts.stores.main.state=='mall'} store={opts.stores.fruit}></mall>
-<login if={opts.stores.main.state=='login'} store={opts.stores.auth}></login>
+<account-status store={opts.stores.auth} dispatcher={opts.dispatcher}></account-status>
+<mall if={opts.stores.main.state=='mall'} store={opts.stores.fruit} dispatcher={opts.dispatcher}></mall>
+<login if={opts.stores.main.state=='login'} store={opts.stores.auth} dispatcher={opts.dispatcher}></login>
 
 <style>
     main {
@@ -25,7 +25,7 @@ riot.tag('main', `
         console.log("Main mounted");
     });
 
-    store.on('main_state', () => {
+    store.observer.on('main_state', () => {
         this.update();
     });
 

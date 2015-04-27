@@ -1,14 +1,10 @@
 'use strict'
 import riot from 'riot';
-import RiotControl from 'riotcontrol';
+import Store from './store';
 
-function ServerStore() {
-    console.log("Init ServerStore");
-
-    riot.observable(this);
+export default class ServerStore extends Store {
+    constructor(dispatcher) {
+        super(dispatcher);
+        console.log("Init server store");
+    }     
 };
-
-
-let instance = new ServerStore();
-RiotControl.addStore(instance);
-export default instance;

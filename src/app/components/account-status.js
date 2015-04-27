@@ -22,7 +22,7 @@ riot.tag('account-status', `
  `,
  function(opts) {
     let store = opts.store;
-    store.on("login_success", (user) => {
+    store.observer.on("login_success", (user) => {
         this.update();
     });
 });

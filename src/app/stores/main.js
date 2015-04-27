@@ -1,24 +1,22 @@
 'use strict'
 import riot from 'riot';
-import RiotControl from 'riotcontrol';
 
-function MainStore() {
-    console.log("Init MainStore");
+import Store from './store';
 
-    riot.observable(this);
+export default class MainStore extends Store {
+    constructor(dispatcher) {
+        super(dispatcher);
+        console.log("Init MainStore");
+        this.state="mall";
 
-    this.state="mall";
+        this.observer.on("main_state", (state) => {
+            this.state = state;
+        });
 
-    this.on("main_state", function(state) {
-        this.state = state;
-    });
+        this.observer.on("fruit_swap", async (fruit) => { 
+            this.dispatcher.trigger("main_state", "mall");
+        });
+    }     
 
-    this.on("fruit_swap", async function (fruit) { 
-        RiotControl.trigger("main_state", "mall");
-    });
 };
 
-
-let instance = new MainStore();
-RiotControl.addStore(instance);
-export default instance;

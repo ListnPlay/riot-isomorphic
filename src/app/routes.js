@@ -1,20 +1,36 @@
 // Application routes - shared by client and server
-import RiotControl from 'riotcontrol';
 import riot from 'riot';
+import miscUtil from './util/misc'
+
+import Dispatcher from './util/dispatcher';
 
 class Routes {
     constructor() {
         console.log("Routes class constructed!");
         // Load Page.js on the client side
-        if (typeof window != 'undefined') {
+        if (miscUtil.isBrowser()) {
             this.page = require('page');
-        }
+            console.log("Initalizing browser dispatcher");
+            // On the browser - we generate one global dispatcher and stores instance
+            this.browserDispather = new Dispatcher();
+        } 
     }
 
     waitBeforeRendering(req, list) {
         req.waitBeforeRendering = list;
         if (this.context) {
             this.context.waitBeforeRendering = list;
+        }
+    }
+
+    getDispatcher(req) {
+        if (this.browserDispather) {
+            // Browser dispatcher (per browsin session)
+            return this.browserDispather;
+        } else {
+            // Server dispatcher (per request)
+            req.dispatcher = new Dispatcher();
+            return req.dispatcher;
         }
     }
 
@@ -34,15 +50,17 @@ class Routes {
         //                                     //
         app.route('/').get((req, res, next) => {
             console.log("Default route!")
-            RiotControl.trigger("fruit_swap", null);
+            let dispatcher = this.getDispatcher(req);
+            dispatcher.trigger("fruit_swap", null);
 
             this.go(next);
         });
 
         app.route('/apple').get((req, res, next) => {
-
             this.waitBeforeRendering(req, ["fruit_data_updated"]);
-            RiotControl.trigger("fruit_swap", "apple");
+
+            let dispatcher = this.getDispatcher(req);
+            dispatcher.trigger("fruit_swap", "apple");
 
             this.go(next);
 
@@ -50,14 +68,17 @@ class Routes {
 
         app.route('/banana').get((req, res, next) => {
             this.waitBeforeRendering(req, ["fruit_data_updated"]);
+
             console.log("Triggering banana fruit_swap")
-            RiotControl.trigger("fruit_swap", "banana");
+            let dispatcher = this.getDispatcher(req);
+            dispatcher.trigger("fruit_swap", "banana");
 
             this.go(next);
         });
 
         app.route('/login').get((req, res, next) => {
-            RiotControl.trigger("main_state", "login");
+            let dispatcher = this.getDispatcher(req);
+            dispatcher.trigger("main_state", "login");
 
             this.go(next);
         })
