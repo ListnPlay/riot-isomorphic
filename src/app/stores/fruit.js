@@ -7,16 +7,18 @@ import Store from './store';
 
 export default class FruitStore extends Store {
 
-    constructor(dispatcher) {
-        super(dispatcher);
+    constructor() {
+        super();
         console.log("Init FruitStore");
 
         this.state="mall";
         this.currentFruit = null;
 
-        this.observer.on("fruit_swap", async (fruit) => { 
+        this.on("fruit_swap", async (fruit) => { 
             try {
                 this.currentFruit = fruit;
+                this.trigger("fruit_updated");
+
                 this.fruitData = null;
 
                 if (fruit) {
@@ -26,7 +28,7 @@ export default class FruitStore extends Store {
                        this.fruitData = await response.json();*/
                     this.fruitData = await socketUtil.rpc('fruit::get', fruit);
                     console.log("Fruit data: ",this.fruitData);
-                    dispatcher.trigger("fruit_data_updated");
+                    this.trigger("fruit_data_updated");
                 }
             }
             catch (e) {
@@ -34,14 +36,14 @@ export default class FruitStore extends Store {
             }
         });
 
-        this.observer.on("taste_fruit", async (type) => {
+        this.on("taste_fruit", async (type) => {
             try {
                 let result = await socketUtil.rpc('taste::get', type);
-                this.dispatcher.trigger('taste_result', {'type': type, 'result': result.result});
+                this.trigger('taste_result', {'type': type, 'result': result.result});
             }
             catch (error) {
                 console.log("Taste fruit error ", error);
-                this.dispatcher.trigger('taste_error', {message: error});
+                this.trigger('taste_error', {message: error});
             }
         });
     }     

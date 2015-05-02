@@ -2,7 +2,7 @@ import Stores from '../stores'
 
 export default class Dispatcher {
     constructor() {
-        this.stores = new Stores(this);
+        this.stores = new Stores();
         this._stores = [];
         Object.keys(this.stores).forEach((key) => {
             this._stores.push(this.stores[key]);
@@ -13,28 +13,28 @@ export default class Dispatcher {
     on() {
         let args = [].slice.call(arguments);
         this._stores.forEach(function(el) {
-            el.obvserver.on.apply(null, args);
+            el.control.on.apply(null, args);
         });
     }
 
     one() {
         let args = [].slice.call(arguments);
         this._stores.forEach(function(el) {
-            el.observer.one.apply(null, args);
+            el.control.one.apply(null, args);
         });
     }
 
     off() {
         let args = [].slice.call(arguments);
         this._stores.forEach(function(el) {
-            el.observer.off.apply(null, args);
+            el.control.off.apply(null, args);
         });
     }
 
     trigger() {
         let args = [].slice.call(arguments);
         this._stores.forEach(function(el) {
-            el.observer.trigger.apply(null, args);
+            el.control.trigger.apply(null, args);
         });
     }
 };

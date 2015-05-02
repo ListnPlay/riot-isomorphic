@@ -1,7 +1,8 @@
 'use strict'
 import riot from 'riot';
+import componentFactory from '../component-factory';
 
-riot.tag('apple', `
+componentFactory.createComponent('apple', `
 
  <h1>We sell apples:</h1>
  <ul>
@@ -30,16 +31,13 @@ riot.tag('apple', `
  `,
  function(opts) {
     console.log("Init Apple tag");
-    let store = opts.store;
-    let observer = store.observer;
+    this.data = this.stores.fruit.fruitData;
 
-    this.data = store.fruitData;
-
-    observer.on("fruit_data_updated", () => {
-         this.data = store.fruitData;
+    this.dispatcher.on("fruit_data_updated", () => {
+         this.data = this.stores.fruit.fruitData;
          this.update();
     });
-    observer.on("fruit_swap", () => {
+    this.dispatcher.on("fruit_updated", () => {
         this.data = {types: []};
         this.tasteError = null;
         this.tasteResult = null;
@@ -49,16 +47,16 @@ riot.tag('apple', `
     this.try = () => {
         let typeToTry = this.data.types[Math.floor((Math.random() * this.data.types.length))]; 
         console.log("Trying ", typeToTry);
-        opts.dispatcher.trigger("taste_fruit", typeToTry);
+        this.dispatcher.trigger("taste_fruit", typeToTry);
     }
 
-    observer.on('taste_result', (data) => {
+    this.dispatcher.on('taste_result', (data) => {
       console.log("Taste result!", data);  
       this.tasteResult = data;
       this.update();
     });
 
-    observer.on('taste_error', (error) => {
+    this.dispatcher.on('taste_error', (error) => {
       console.log("Taste error!", error.message);  
       this.tasteError = error.message;
       this.update();

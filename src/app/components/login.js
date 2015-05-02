@@ -1,7 +1,8 @@
 import riot from 'riot';
 import routes from '../routes';
+import componentFactory from '../component-factory';
 
-riot.tag('login', `
+componentFactory.createComponent('login', `
 
   <form onsubmit="{ login }">
       <div>
@@ -55,23 +56,21 @@ riot.tag('login', `
  </style>
  `,
  function(opts) {
-    let store = opts.store;
-
     this.login = (e) => {
         console.log("Logging in with: ", this.username.value, "/", this.password.value);
-        opts.dispatcher.trigger("user_login", {
+        this.dispatcher.trigger("user_login", {
             username: this.username.value,
             password: this.password.value
         });
     }
 
-    store.observer.on("login_error", (message) => {
+    this.dispatcher.on("login_error", (message) => {
         console.log("Received login error message: ", message);        
         this.errorMessage = message;
         this.update();
     });
 
-    store.observer.on("login_success", () => {
+    this.dispatcher.on("login_success", () => {
         console.log("Logged in");        
         routes.page.show("/");
     });

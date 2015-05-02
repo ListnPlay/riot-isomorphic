@@ -96,14 +96,13 @@ app.use(function (req, res, next) {
    function renderTest() {
         if (!rendered && waitBeforeRendering.length == 0) {
             rendered = true;
-            req.dispatcher.stores.server.observer.off('*');
-            res.render('index', {mainTag: 'main', tagOpts: {'stores': req.dispatcher.stores, 'dispatcher': req.dispatcher}});
+            res.render('index', {mainTag: 'main', tagOpts: {'dispatcher': req.dispatcher}});
         }
     }
     // Subscribe to all events
     if (req.waitBeforeRendering) {
         req.waitBeforeRendering.forEach((eventName) => {
-            req.dispatcher.stores.server.observer.on(eventName, () => {
+            req.dispatcher.one(eventName, () => {
                 waitBeforeRendering = _.without(waitBeforeRendering, eventName);
                 renderTest();
             });
@@ -111,9 +110,6 @@ app.use(function (req, res, next) {
     }
     renderTest(); 
 });
-
-
-
 
 console.log("Starting server");
 

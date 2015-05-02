@@ -34,8 +34,9 @@ class Routes {
         }
     }
 
-    go(next) {
+    go(next, req) {
         if (next) {
+            req.handledRoute = true;
             next();
         }
     }
@@ -53,7 +54,7 @@ class Routes {
             let dispatcher = this.getDispatcher(req);
             dispatcher.trigger("fruit_swap", null);
 
-            this.go(next);
+            this.go(next, req);
         });
 
         app.route('/apple').get((req, res, next) => {
@@ -62,7 +63,7 @@ class Routes {
             let dispatcher = this.getDispatcher(req);
             dispatcher.trigger("fruit_swap", "apple");
 
-            this.go(next);
+            this.go(next, req);
 
         });
 
@@ -73,14 +74,22 @@ class Routes {
             let dispatcher = this.getDispatcher(req);
             dispatcher.trigger("fruit_swap", "banana");
 
-            this.go(next);
+            this.go(next, req);
         });
 
         app.route('/login').get((req, res, next) => {
             let dispatcher = this.getDispatcher(req);
-            dispatcher.trigger("main_state", "login");
+            dispatcher.trigger("login_pressed");
 
-            this.go(next);
+            this.go(next, req);
+        });
+
+        app.route('*').get((req, res, next) => {
+            if (!req.handledRoute) {
+                res.status(404).send('Nothing to see here!');
+            } else {
+                this.go(next, req);
+            }
         })
     }
 };

@@ -4,17 +4,19 @@ import riot from 'riot';
 import Store from './store';
 
 export default class MainStore extends Store {
-    constructor(dispatcher) {
-        super(dispatcher);
+    constructor() {
+        super();
         console.log("Init MainStore");
         this.state="mall";
 
-        this.observer.on("main_state", (state) => {
-            this.state = state;
+        this.on("login_pressed", (state) => {
+            this.state = 'login';
+            this.trigger("main_state_updated", "login");
         });
 
-        this.observer.on("fruit_swap", async (fruit) => { 
-            this.dispatcher.trigger("main_state", "mall");
+        this.on("fruit_swap", (fruit) => { 
+            this.state ='mall';
+            this.trigger("main_state_updated", "mall");
         });
     }     
 

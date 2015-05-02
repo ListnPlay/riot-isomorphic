@@ -1,14 +1,15 @@
 import riot from 'riot';
+import componentFactory from '../component-factory';
 
 import apple from './apple';
 import banana from './banana';
 
-riot.tag('mall', `
+componentFactory.createComponent('mall', `
  <h1>Welcome to the fruit shopping mall</h1>
  <a href="/banana">Visit banana store</a>
  <a href="/apple">Visit apple store</a>
- <apple if={opts.store.currentFruit=='apple'} store={opts.store} dispatcher={opts.dispatcher}></apple>
- <banana if={opts.store.currentFruit=='banana'} store={opts.store}></banana>
+ <apple if={stores.fruit.currentFruit=='apple'}></apple>
+ <banana if={stores.fruit.currentFruit=='banana'}></banana>
  <style>
      mall {
         a {
@@ -18,9 +19,8 @@ riot.tag('mall', `
  </style>
  `,
  function(opts) {
-    let store = opts.store;
-    store.observer.on('fruit_swap', (fruit) => {
-        console.log("Mall - fruit swap!! ", opts, this);
+    this.dispatcher.on('fruit_updated', (fruit) => {
+        console.log("Mall - fruit updated!!");
         this.update();
     });
 });

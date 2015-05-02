@@ -1,14 +1,15 @@
 import riot from 'riot';
+import componentFactory from '../component-factory';
 
 import accountStatus from './account-status';
 import mall from './mall';
 import login from './login';
 
-riot.tag('main', `
+componentFactory.createComponent('main', `
 
-<account-status store={opts.stores.auth} dispatcher={opts.dispatcher}></account-status>
-<mall if={opts.stores.main.state=='mall'} store={opts.stores.fruit} dispatcher={opts.dispatcher}></mall>
-<login if={opts.stores.main.state=='login'} store={opts.stores.auth} dispatcher={opts.dispatcher}></login>
+<account-status></account-status>
+<mall if={stores.main.state=='mall'}></mall>
+<login if={stores.main.state=='login'}></login>
 
 <style>
     main {
@@ -19,23 +20,11 @@ riot.tag('main', `
  
  `,
  function(opts) {
-    let store = opts.stores.main;
-
     this.on('mount', () => {
         console.log("Main mounted");
     });
 
-    store.observer.on('main_state', () => {
+    this.dispatcher.on('main_state_updated', () => {
         this.update();
-    });
-
-    this.on('premount', () => {
-        // For isomorphic rendering
-        if (typeof window != "undefined") {
-            var serverNode = document.querySelector("main");
-               while (serverNode.hasChildNodes()) {
-                serverNode.removeChild(serverNode.lastChild);
-            }
-        }
     });
 });

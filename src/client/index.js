@@ -27,8 +27,6 @@ routes.runRoutingTable(window.app, loadContext);
 
 page();
 
-console.log("Context after routing ", loadContext);
-
 let rendered = false;
 let waitBeforeRendering = [];
 if (loadContext.waitBeforeRendering) {
@@ -36,22 +34,24 @@ if (loadContext.waitBeforeRendering) {
     waitBeforeRendering = loadContext.waitBeforeRendering.slice();
 }
 
+console.log("Context after routing ", loadContext, waitBeforeRendering, document.querySelector('main'));
+
 function renderTest() {
      if (!rendered && waitBeforeRendering.length == 0 && document.querySelector('main')) {
          rendered = true;
-         routes.browserDispather.stores.server.observer.off('*');
          console.log("Rendering client");
-         riot.mount('main', {stores: routes.browserDispather.stores, dispatcher: routes.browserDispather});
+         riot.mount('main', { dispatcher: routes.browserDispather });
      }
 }
- // Subscribe to all events
+
+// Subscribe to all events
 if (loadContext.waitBeforeRendering) {
      loadContext.waitBeforeRendering.forEach((eventName) => {
-         routes.browserDispather.stores.server.observer.on(eventName, () => {
-             waitBeforeRendering = _.without(waitBeforeRendering, eventName);
-             renderTest();
+         routes.browserDispather.one(eventName, () => {
+            waitBeforeRendering = _.without(waitBeforeRendering, eventName);
+            renderTest();
          });
-     });
+    });
 }
 
 renderTest(); 

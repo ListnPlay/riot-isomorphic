@@ -1,6 +1,7 @@
 import riot from 'riot';
+import componentFactory from '../component-factory';
 
-riot.tag('banana', `
+componentFactory.createComponent('banana', `
 
  <h1>-=We sell bananas=- :</h1>
  <ul>
@@ -18,14 +19,13 @@ riot.tag('banana', `
  </style>
  `,
  function(opts) {
-    let store = opts.store;
-    this.data = store.fruitData;
+    this.data = this.stores.fruit.fruitData;
 
-    store.observer.on("fruit_data_updated", () => {
-         this.data = store.fruitData;
+    this.dispatcher.on("fruit_data_updated", () => {
+         this.data = this.stores.fruit.fruitData;
          this.update();
     });
-    store.observer.on("fruit_swap", () => {
+    this.dispatcher.on("fruit_updated", () => {
         this.data = {types: []};
         this.update();
     });

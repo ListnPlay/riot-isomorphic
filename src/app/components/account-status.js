@@ -1,13 +1,14 @@
 import riot from 'riot';
+import componentFactory from '../component-factory';
 
-riot.tag('account-status', `
+componentFactory.createComponent('account-status', `
 
  <p>Account status:
-    <span if="{opts.store.user == null}">
+    <span if="{stores.auth.user == null}">
          <a href="/login">Please Login</a>
     </span>
-    <span if="{opts.store.user != null}">
-        Logged in as {opts.store.user.username}
+    <span if="{stores.auth.user != null}">
+        Logged in as {stores.auth.user.username}
     </span>
  </p>
  <style>
@@ -21,8 +22,7 @@ riot.tag('account-status', `
  </style>
  `,
  function(opts) {
-    let store = opts.store;
-    store.observer.on("login_success", (user) => {
+    this.dispatcher.on("login_success", (user) => {
         this.update();
     });
 });
