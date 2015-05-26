@@ -15,7 +15,7 @@ const fruitService = {
                 } else {
                     reject("Unknown type of fruit");
                 }
-            },1000);
+            },0);
         });
     }
 };

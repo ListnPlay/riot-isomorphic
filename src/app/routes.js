@@ -68,8 +68,6 @@ class Routes {
         });
 
         app.route('/banana').get((req, res, next) => {
-            this.waitBeforeRendering(req, ["fruit_data_updated"]);
-
             console.log("Triggering banana fruit_swap")
             let dispatcher = this.getDispatcher(req);
             dispatcher.trigger("fruit_swap", "banana");
