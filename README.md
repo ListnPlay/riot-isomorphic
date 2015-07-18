@@ -21,3 +21,4 @@ Run:
 ```
 gulp
 ```
+Then browse to http://localhost:3000
