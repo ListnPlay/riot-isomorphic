@@ -50,11 +50,6 @@ app.engine('html', function (filePath, options, callback) {
 app.set('views', './build/'); // specify the views directory
 app.set('view engine', 'html'); // register the template engine
 
-
-// Client routes
-routes.runRoutingTable(app);
-
-
 // Server routes
 app.configure(
     feathers.rest()
@@ -75,7 +70,10 @@ app.configure(
 }))
 .use('/fruit', services.fruit)
 .use('/taste', services.taste)
-.use('/users', services.users)
+.use('/users', services.users);
+
+// Client routes
+routes.runRoutingTable(app);
 
 // Authentication setup
 let userService = app.service('users');
