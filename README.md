@@ -12,6 +12,9 @@ An attempt for an isomorphic appliction using RiotJS 2. Includes:
 + Support for Autoprefixer - Gulp tasks extract css from javascript tags, concatinate them and run postprocessing.
 + Gulp based tasks for running the node app using [gulp-live-server].
 
+##### Note: The demo services have an intentional 1sec delay before responding, to illustrate the ```waitBeforeRendering``` feature.
+
+
 Install
 ```
 npm install -g gulp
