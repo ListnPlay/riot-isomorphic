@@ -23,7 +23,7 @@
     "crypto": "0.0.3",
     "express": "^4.12.3",
     "express-session": "^1.11.1",
-    "feathers": "^1.1.0-pre.0",
+    "feathers": "1.1.0-pre.0",
     "feathers-hooks": "^0.5.0",
     "feathers-memory": "^0.3.4",
     "feathers-passport": "git+https://github.com/ListnPlay/feathers-passport.git",
