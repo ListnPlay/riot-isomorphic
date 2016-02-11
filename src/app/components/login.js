@@ -28,7 +28,7 @@ componentFactory.createComponent('login', `
       </div>
   </form>
   <div if={errorMessage} class="login-error">
-    {{errorMessage}}          
+    {errorMessage}          
   </div>
 
   <p class="note"> * Default user/password: test/1234 * </p>
